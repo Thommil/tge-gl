@@ -10,7 +10,6 @@ import (
 )
 
 type plugin struct {
-	isInit    bool
 	glContext gl.Context
 }
 
