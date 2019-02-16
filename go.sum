@@ -8,5 +8,7 @@ github.com/thommil/tge v0.0.0-20190216142912-2256383c9efa h1:MFia+50mxm7S8wb5INe
 github.com/thommil/tge v0.0.0-20190216142912-2256383c9efa/go.mod h1:sWYKXIw8ZrX39iJpp4kBa+FINg3KYZthjYcnIQrDadI=
 github.com/thommil/tge v0.0.0-20190216215805-bc885306f420 h1:NKBuRZI5KDVZ0/jxanXq5SA196/RnzhS36K81gh7j24=
 github.com/thommil/tge v0.0.0-20190216215805-bc885306f420/go.mod h1:sWYKXIw8ZrX39iJpp4kBa+FINg3KYZthjYcnIQrDadI=
+github.com/thommil/tge v0.0.0-20190216215825-9ccd3153d8e2 h1:fF8fPSIk054sc5LT8kPw2w0PVi5hCl6/BVWowSWJ7fA=
+github.com/thommil/tge v0.0.0-20190216215825-9ccd3153d8e2/go.mod h1:sWYKXIw8ZrX39iJpp4kBa+FINg3KYZthjYcnIQrDadI=
 golang.org/x/mobile v0.0.0-20190127143845-a42111704963 h1:2HSxAhImj2OpXsNjXSqfnv1xtqeCpDjwPB3o1DnQqKM=
 golang.org/x/mobile v0.0.0-20190127143845-a42111704963/go.mod h1:z+o9i4GpDbdi3rU15maQ/Ox0txvL9dWGYEHz965HBQE=
