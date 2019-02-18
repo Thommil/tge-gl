@@ -65,6 +65,51 @@ type VertexArray struct {
 	Value uint32
 }
 
+// AttribNone helper for unbind purpose
+var AttribNone = Attrib{
+	Value: NONE,
+}
+
+// ProgramNone helper for unbind purpose
+var ProgramNone = Program{
+	Value: NONE,
+}
+
+// ShaderNone helper for unbind purpose
+var ShaderNone = Shader{
+	Value: NONE,
+}
+
+// BufferNone helper for unbind purpose
+var BufferNone = Buffer{
+	Value: NONE,
+}
+
+// FramebufferNone helper for unbind purpose
+var FramebufferNone = Framebuffer{
+	Value: NONE,
+}
+
+// RenderbufferNone helper for unbind purpose
+var RenderbufferNone = Renderbuffer{
+	Value: NONE,
+}
+
+// TextureNone helper for unbind purpose
+var TextureNone = Texture{
+	Value: NONE,
+}
+
+// UniformNone helper for unbind purpose
+var UniformNone = Uniform{
+	Value: NONE,
+}
+
+// VertexArrayNone helper for unbind purpose
+var VertexArrayNone = VertexArray{
+	Value: NONE,
+}
+
 func (v Attrib) c() uintptr { return uintptr(v.Value) }
 func (v Enum) c() uintptr   { return uintptr(v) }
 func (v Program) c() uintptr {
