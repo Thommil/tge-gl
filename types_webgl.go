@@ -15,34 +15,78 @@ type Attrib struct {
 }
 
 type Program struct {
-	js.Value
+	Value js.Value
 }
 
 type Shader struct {
-	js.Value
+	Value js.Value
 }
 
 type Buffer struct {
-	js.Value
+	Value js.Value
 }
 
 type Framebuffer struct {
-	js.Value
+	Value js.Value
 }
 
 type Renderbuffer struct {
-	js.Value
+	Value js.Value
 }
 
 type Texture struct {
-	js.Value
+	Value js.Value
 }
 
 type Uniform struct {
-	js.Value
+	Value js.Value
 }
 
-func (v Attrib) Valid() bool       { return v.Value != 0 }
+type VertexArray struct {
+	Value js.Value
+}
+
+// ProgramNone helper for unbind purpose
+var ProgramNone = Program{
+	Value: js.Null(),
+}
+
+// ShaderNone helper for unbind purpose
+var ShaderNone = Shader{
+	Value: js.Null(),
+}
+
+// BufferNone helper for unbind purpose
+var BufferNone = Buffer{
+	Value: js.Null(),
+}
+
+// FramebufferNone helper for unbind purpose
+var FramebufferNone = Framebuffer{
+	Value: js.Null(),
+}
+
+// RenderbufferNone helper for unbind purpose
+var RenderbufferNone = Renderbuffer{
+	Value: js.Null(),
+}
+
+// TextureNone helper for unbind purpose
+var TextureNone = Texture{
+	Value: js.Null(),
+}
+
+// UniformNone helper for unbind purpose
+var UniformNone = Uniform{
+	Value: js.Null(),
+}
+
+// VertexArrayNone helper for unbind purpose
+var VertexArrayNone = VertexArray{
+	Value: js.Null(),
+}
+
+func (v Attrib) Valid() bool       { return v.Value != -1 }
 func (v Program) Valid() bool      { return v.Value != js.Null() }
 func (v Shader) Valid() bool       { return v.Value != js.Null() }
 func (v Buffer) Valid() bool       { return v.Value != js.Null() }
@@ -50,3 +94,4 @@ func (v Framebuffer) Valid() bool  { return v.Value != js.Null() }
 func (v Renderbuffer) Valid() bool { return v.Value != js.Null() }
 func (v Texture) Valid() bool      { return v.Value != js.Null() }
 func (v Uniform) Valid() bool      { return v.Value != js.Null() }
+func (v VertexArray) Valid() bool  { return v.Value != js.Null() }
