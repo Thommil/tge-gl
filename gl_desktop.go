@@ -33,6 +33,10 @@ func (p *plugin) Init(runtime tge.Runtime) error {
 	return fmt.Errorf("Already initialized")
 }
 
+func (p *plugin) GetName() string {
+	return Name
+}
+
 func (p *plugin) Dispose() {
 	p.isInit = false
 }

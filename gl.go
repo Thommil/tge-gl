@@ -10,6 +10,9 @@ import (
 	unsafe "unsafe"
 )
 
+// Name name of the plugin
+const Name = "gl"
+
 var nativeEndian binary.ByteOrder
 
 func init() {
