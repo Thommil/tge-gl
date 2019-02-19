@@ -2,13 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build !js
+// +build android ios
 
 package gl
-
-import (
-	fmt "fmt"
-)
 
 // Enum is equivalent to GLenum, and is normally used with one of the
 // constants defined in this package.
@@ -24,9 +20,6 @@ type Attrib struct {
 
 // Program identifies a compiled shader program.
 type Program struct {
-	// Init is set by CreateProgram, as some GL drivers (in particular,
-	// ANGLE) return true for glIsProgram(0).
-	Init  bool
 	Value uint32
 }
 
@@ -110,16 +103,9 @@ var VertexArrayNone = VertexArray{
 	Value: NONE,
 }
 
-func (v Attrib) c() uintptr { return uintptr(v.Value) }
-func (v Enum) c() uintptr   { return uintptr(v) }
-func (v Program) c() uintptr {
-	if !v.Init {
-		ret := uintptr(0)
-		ret--
-		return ret
-	}
-	return uintptr(v.Value)
-}
+func (v Attrib) c() uintptr       { return uintptr(v.Value) }
+func (v Enum) c() uintptr         { return uintptr(v) }
+func (v Program) c() uintptr      { return uintptr(v.Value) }
 func (v Shader) c() uintptr       { return uintptr(v.Value) }
 func (v Buffer) c() uintptr       { return uintptr(v.Value) }
 func (v Framebuffer) c() uintptr  { return uintptr(v.Value) }
@@ -128,12 +114,11 @@ func (v Texture) c() uintptr      { return uintptr(v.Value) }
 func (v Uniform) c() uintptr      { return uintptr(v.Value) }
 func (v VertexArray) c() uintptr  { return uintptr(v.Value) }
 
-func (v Attrib) String() string       { return fmt.Sprintf("Attrib(%d)", v.Value) }
-func (v Program) String() string      { return fmt.Sprintf("Program(%d)", v.Value) }
-func (v Shader) String() string       { return fmt.Sprintf("Shader(%d)", v.Value) }
-func (v Buffer) String() string       { return fmt.Sprintf("Buffer(%d)", v.Value) }
-func (v Framebuffer) String() string  { return fmt.Sprintf("Framebuffer(%d)", v.Value) }
-func (v Renderbuffer) String() string { return fmt.Sprintf("Renderbuffer(%d)", v.Value) }
-func (v Texture) String() string      { return fmt.Sprintf("Texture(%d)", v.Value) }
-func (v Uniform) String() string      { return fmt.Sprintf("Uniform(%d)", v.Value) }
-func (v VertexArray) String() string  { return fmt.Sprintf("VertexArray(%d)", v.Value) }
+func (v Program) Valid() bool      { return v.Value != NONE }
+func (v Shader) Valid() bool       { return v.Value != NONE }
+func (v Buffer) Valid() bool       { return v.Value != NONE }
+func (v Framebuffer) Valid() bool  { return v.Value != NONE }
+func (v Renderbuffer) Valid() bool { return v.Value != NONE }
+func (v Texture) Valid() bool      { return v.Value != NONE }
+func (v Uniform) Valid() bool      { return v.Value != NONE }
+func (v VertexArray) Valid() bool  { return v.Value != NONE }

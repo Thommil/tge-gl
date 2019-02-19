@@ -55,7 +55,7 @@ func ActiveTexture(texture Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glAttachShader.xhtml
 func AttachShader(p Program, s Shader) {
-	_pluginInstance.glContext.AttachShader(gl.Program{Value: p.Value}, gl.Shader{s.Value})
+	_pluginInstance.glContext.AttachShader(gl.Program{Init: true, Value: p.Value}, gl.Shader{s.Value})
 }
 
 // BindAttribLocation binds a vertex attribute index with a named
@@ -63,7 +63,7 @@ func AttachShader(p Program, s Shader) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBindAttribLocation.xhtml
 func BindAttribLocation(p Program, a Attrib, name string) {
-	_pluginInstance.glContext.BindAttribLocation(gl.Program{Value: p.Value}, gl.Attrib{a.Value}, name+"\x00")
+	_pluginInstance.glContext.BindAttribLocation(gl.Program{Init: true, Value: p.Value}, gl.Attrib{a.Value}, name+"\x00")
 }
 
 // BindBuffer binds a buffer.
@@ -302,7 +302,7 @@ func DeleteFramebuffer(v Framebuffer) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteProgram.xhtml
 func DeleteProgram(p Program) {
-	_pluginInstance.glContext.DeleteProgram(gl.Program{Value: p.Value})
+	_pluginInstance.glContext.DeleteProgram(gl.Program{Init: true, Value: p.Value})
 }
 
 // DeleteRenderbuffer deletes the given render buffer object.
@@ -362,7 +362,7 @@ func DepthRangef(n, f float32) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDetachShader.xhtml
 func DetachShader(p Program, s Shader) {
-	_pluginInstance.glContext.DetachShader(gl.Program{Value: p.Value}, gl.Shader{s.Value})
+	_pluginInstance.glContext.DetachShader(gl.Program{Init: true, Value: p.Value}, gl.Shader{s.Value})
 }
 
 // Disable disables various GL capabilities.
@@ -462,7 +462,7 @@ func GenerateMipmap(target Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetActiveAttrib.xhtml
 func GetActiveAttrib(p Program, index uint32) (name string, size int, ty Enum) {
-	n, s, t := _pluginInstance.glContext.GetActiveAttrib(gl.Program{Value: p.Value}, index)
+	n, s, t := _pluginInstance.glContext.GetActiveAttrib(gl.Program{Init: true, Value: p.Value}, index)
 	return n, s, Enum(t)
 }
 
@@ -473,7 +473,7 @@ func GetActiveAttrib(p Program, index uint32) (name string, size int, ty Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetActiveUniform.xhtml
 func GetActiveUniform(p Program, index uint32) (name string, size int, ty Enum) {
-	n, s, t := _pluginInstance.glContext.GetActiveUniform(gl.Program{Value: p.Value}, index)
+	n, s, t := _pluginInstance.glContext.GetActiveUniform(gl.Program{Init: true, Value: p.Value}, index)
 	return n, s, Enum(t)
 }
 
@@ -481,7 +481,7 @@ func GetActiveUniform(p Program, index uint32) (name string, size int, ty Enum) 
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetAttachedShaders.xhtml
 func GetAttachedShaders(p Program) []Shader {
-	shaders := _pluginInstance.glContext.GetAttachedShaders(gl.Program{Value: p.Value})
+	shaders := _pluginInstance.glContext.GetAttachedShaders(gl.Program{Init: true, Value: p.Value})
 	s := make([]Shader, len(shaders))
 	for i, el := range shaders {
 		s[i] = Shader{el.Value}
@@ -493,7 +493,7 @@ func GetAttachedShaders(p Program) []Shader {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetAttribLocation.xhtml
 func GetAttribLocation(p Program, name string) Attrib {
-	return Attrib{_pluginInstance.glContext.GetAttribLocation(gl.Program{Value: p.Value}, name).Value}
+	return Attrib{_pluginInstance.glContext.GetAttribLocation(gl.Program{Init: true, Value: p.Value}, name).Value}
 }
 
 // GetBooleanv returns the boolean values of parameter pname.
@@ -563,14 +563,14 @@ func GetFramebufferAttachmentParameteri(target, attachment, pname Enum) int {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetProgramiv.xhtml
 func GetProgrami(p Program, pname Enum) int {
-	return _pluginInstance.glContext.GetProgrami(gl.Program{Value: p.Value}, gl.Enum(pname))
+	return _pluginInstance.glContext.GetProgrami(gl.Program{Init: true, Value: p.Value}, gl.Enum(pname))
 }
 
 // GetProgramInfoLog returns the information log for a program.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetProgramInfoLog.xhtml
 func GetProgramInfoLog(p Program) string {
-	return _pluginInstance.glContext.GetProgramInfoLog(gl.Program{Value: p.Value})
+	return _pluginInstance.glContext.GetProgramInfoLog(gl.Program{Init: true, Value: p.Value})
 }
 
 // GetRenderbufferParameteri returns a parameter value for a render buffer.
@@ -641,21 +641,21 @@ func GetTexParameteriv(dst []int32, target, pname Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetUniform.xhtml
 func GetUniformfv(dst []float32, src Uniform, p Program) {
-	_pluginInstance.glContext.GetUniformfv(dst, gl.Uniform{src.Value}, gl.Program{Value: p.Value})
+	_pluginInstance.glContext.GetUniformfv(dst, gl.Uniform{src.Value}, gl.Program{Init: true, Value: p.Value})
 }
 
 // GetUniformiv returns the float values of a uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetUniform.xhtml
 func GetUniformiv(dst []int32, src Uniform, p Program) {
-	_pluginInstance.glContext.GetUniformiv(dst, gl.Uniform{src.Value}, gl.Program{Value: p.Value})
+	_pluginInstance.glContext.GetUniformiv(dst, gl.Uniform{src.Value}, gl.Program{Init: true, Value: p.Value})
 }
 
 // GetUniformLocation returns the location of a uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetUniformLocation.xhtml
 func GetUniformLocation(p Program, name string) Uniform {
-	return Uniform{_pluginInstance.glContext.GetUniformLocation(gl.Program{Value: p.Value}, name).Value}
+	return Uniform{_pluginInstance.glContext.GetUniformLocation(gl.Program{Init: true, Value: p.Value}, name).Value}
 }
 
 // GetVertexAttribf reads the float value of a vertex attribute.
@@ -718,7 +718,7 @@ func IsFramebuffer(fb Framebuffer) bool {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glIsProgram.xhtml
 func IsProgram(p Program) bool {
-	return _pluginInstance.glContext.IsProgram(gl.Program{Value: p.Value})
+	return _pluginInstance.glContext.IsProgram(gl.Program{Init: true, Value: p.Value})
 }
 
 // IsRenderbuffer reports if rb is a valid render buffer.
@@ -753,7 +753,7 @@ func LineWidth(width float32) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glLinkProgram.xhtml
 func LinkProgram(p Program) {
-	_pluginInstance.glContext.LinkProgram(gl.Program{Value: p.Value})
+	_pluginInstance.glContext.LinkProgram(gl.Program{Init: true, Value: p.Value})
 }
 
 // PixelStorei sets pixel storage parameters.
@@ -1051,7 +1051,7 @@ func UniformMatrix4fv(dst Uniform, src []float32) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUseProgram.xhtml
 func UseProgram(p Program) {
-	_pluginInstance.glContext.UseProgram(gl.Program{Value: p.Value})
+	_pluginInstance.glContext.UseProgram(gl.Program{Init: true, Value: p.Value})
 }
 
 // ValidateProgram checks to see whether the executables contained in
@@ -1061,7 +1061,7 @@ func UseProgram(p Program) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glValidateProgram.xhtml
 func ValidateProgram(p Program) {
-	_pluginInstance.glContext.ValidateProgram(gl.Program{Value: p.Value})
+	_pluginInstance.glContext.ValidateProgram(gl.Program{Init: true, Value: p.Value})
 }
 
 // VertexAttrib1f writes a float vertex attribute.
