@@ -22,11 +22,11 @@ type plugin struct {
 var _pluginInstance = &plugin{}
 
 func (p *plugin) Init(runtime tge.Runtime) error {
-	switch runtime.(type) {
-	case tge.BrowserRuntime:
-		p.glContext = runtime.(tge.BrowserRuntime).GetGlContext()
-	default:
-		return fmt.Errorf("Runtime must be of type BrowserRuntime")
+	renderer := runtime.GetRenderer()
+	if renderer.(type) == js.Value {
+		p.glContext = renderer.(js.Value)
+	} else {
+		return fmt.Errorf("Runtime renderer must be a js.Value")
 	}
 
 	return nil

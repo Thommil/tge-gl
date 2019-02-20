@@ -11,6 +11,10 @@ github.com/matryer/is v1.2.0/go.mod h1:2fLPjFQM9rhQ15aVEtbuwhJinnOqrmgXPNdZsdwlW
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646/go.mod h1:jpp1/29i3P1S/RLdc7JQKbRpFeM1dOBd8T9ki5s+AY8=
 github.com/otiai10/copy v0.0.0-20180813032824-7e9a647135a1/go.mod h1:pXzZSDlN+HPzSdyIBnKNN9ptD9Hx7iZMWIJPTwo4FPE=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
+github.com/shurcooL/go v0.0.0-20190121191506-3fef8c783dec h1:/HtRSjw9CHLh4i7BAz6IUbQ3neoWobZxMTn1pbrzvFY=
+github.com/shurcooL/go v0.0.0-20190121191506-3fef8c783dec/go.mod h1:TDJrrUr11Vxrven61rcy3hJMUqaf/CLWYhHNPmT14Lk=
+github.com/shurcooL/go-goon v0.0.0-20170922171312-37c2f522c041 h1:llrF3Fs4018ePo4+G/HV/uQUqEI1HMDjCeOf2V6puPc=
+github.com/shurcooL/go-goon v0.0.0-20170922171312-37c2f522c041/go.mod h1:N5mDOmsrJOB+vfqUK+7DmDyjhSLIIBnXo9lvZJj3MWQ=
 github.com/thommil/tge v0.0.0-20190215125252-ec2de6849394/go.mod h1:sWYKXIw8ZrX39iJpp4kBa+FINg3KYZthjYcnIQrDadI=
 github.com/thommil/tge v0.0.0-20190216142835-78a4ed6e300e h1:vE1LEcl0Z8uvz4U8xDMR8orwKmWk9CVvpxSX2sEn0/8=
 github.com/thommil/tge v0.0.0-20190216142835-78a4ed6e300e/go.mod h1:sWYKXIw8ZrX39iJpp4kBa+FINg3KYZthjYcnIQrDadI=

@@ -20,11 +20,11 @@ type plugin struct {
 var _pluginInstance = &plugin{}
 
 func (p *plugin) Init(runtime tge.Runtime) error {
-	switch runtime.(type) {
-	case tge.MobileRuntime:
-		p.glContext = runtime.(tge.MobileRuntime).GetGlContext()
-	default:
-		return fmt.Errorf("Runtime must be of type MobileRuntime")
+	renderer := runtime.GetRenderer()
+	if renderer.(type) == gl.Context {
+		p.glContext = renderer.(gl.Context)
+	} else {
+		return fmt.Errorf("Runtime renderer must be a gl.Context")
 	}
 
 	return nil
