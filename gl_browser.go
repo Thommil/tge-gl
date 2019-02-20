@@ -23,12 +23,12 @@ var _pluginInstance = &plugin{}
 
 func (p *plugin) Init(runtime tge.Runtime) error {
 	renderer := runtime.GetRenderer()
-	if renderer.(type) == js.Value {
-		p.glContext = renderer.(js.Value)
-	} else {
-		return fmt.Errorf("Runtime renderer must be a js.Value")
+	switch renderer.(type) {
+	case *js.Value:
+		p.glContext = renderer.(*js.Value)
+	default:
+		return fmt.Errorf("Runtime renderer must be a *syscall/js.Value")
 	}
-
 	return nil
 }
 

@@ -21,12 +21,12 @@ var _pluginInstance = &plugin{}
 
 func (p *plugin) Init(runtime tge.Runtime) error {
 	renderer := runtime.GetRenderer()
-	if renderer.(type) == gl.Context {
+	switch renderer.(type) {
+	case gl.Context:
 		p.glContext = renderer.(gl.Context)
-	} else {
-		return fmt.Errorf("Runtime renderer must be a gl.Context")
+	default:
+		return fmt.Errorf("Runtime renderer must be a golang.org/x/mobile/gl.Context")
 	}
-
 	return nil
 }
 
