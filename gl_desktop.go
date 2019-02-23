@@ -15,7 +15,7 @@ import (
 	strings "strings"
 	unsafe "unsafe"
 
-	gl "github.com/go-gl/gl/v2.1/gl"
+	gl "github.com/go-gl/gl/v3.3-core/gl"
 	tge "github.com/thommil/tge"
 )
 
@@ -94,6 +94,13 @@ func BindRenderbuffer(target Enum, rb Renderbuffer) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBindTexture.xhtml
 func BindTexture(target Enum, t Texture) {
 	gl.BindTexture(uint32(target), t.Value)
+}
+
+// BindVertexArray binds a VAO.
+//
+// http://www.khronos.org/opengles/sdk/docs/man3/html/glBindVertexArray.xhtml
+func BindVertexArray(vao VertexArray) {
+	gl.BindVertexArray(vao.Value)
 }
 
 // BlendColor sets the blend color.
@@ -285,6 +292,15 @@ func CreateTexture() Texture {
 	return t
 }
 
+// CreateVertexArray creates a VAO.
+//
+// http://www.khronos.org/opengles/sdk/docs/man3/html/glGenVertexArrays.xhtml
+func CreateVertexArray() VertexArray {
+	var vao VertexArray
+	gl.GenVertexArrays(1, &vao.Value)
+	return vao
+}
+
 // CullFace specifies which polygons are candidates for culling.
 //
 // Valid modes: FRONT, BACK, FRONT_AND_BACK.
@@ -334,6 +350,13 @@ func DeleteShader(s Shader) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteTextures.xhtml
 func DeleteTexture(v Texture) {
 	gl.DeleteTextures(1, &v.Value)
+}
+
+// DeleteVertexArray deletes the given VAO.
+//
+// http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteVertexArrays.xhtml
+func DeleteVertexArray(v VertexArray) {
+	gl.DeleteVertexArrays(1, &v.Value)
 }
 
 // DepthFunc sets the function used for depth buffer comparisons.
@@ -833,6 +856,13 @@ func LinkProgram(p Program) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glPixelStorei.xhtml
 func PixelStorei(pname Enum, param int32) {
 	gl.PixelStorei(uint32(pname), param)
+}
+
+// PolygonMode sets Polygon Mode.
+//
+// http://www.khronos.org/opengles/sdk/docs/man3/html/glPolygonMode.xhtml
+func PolygonMode(face, mode Enum) {
+	gl.PolygonMode(uint32(face), uint32(mode))
 }
 
 // PolygonOffset sets the scaling factors for depth offsets.
