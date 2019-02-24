@@ -2,7 +2,6 @@ package gl
 
 import (
 	binary "encoding/binary"
-	math "math"
 	unsafe "unsafe"
 )
 
@@ -23,30 +22,48 @@ func init() {
 }
 
 // Uint16ToBytes convert uint16 array to byte array
+// depending on host endianness
 func Uint16ToBytes(values []uint16) []byte {
 	b := make([]byte, 2*len(values))
 
-	u := make([]byte, 2)
-	for i, v := range values {
-		nativeEndian.PutUint16(u, v)
-		b[2*i] = u[0]
-		b[2*i+1] = u[1]
+	if nativeEndian == binary.LittleEndian {
+		for i, v := range values {
+			u := *(*uint16)(unsafe.Pointer(&v))
+			b[2*i+0] = byte(u)
+			b[2*i+1] = byte(u >> 8)
+		}
+	} else {
+		for i, v := range values {
+			u := *(*uint16)(unsafe.Pointer(&v))
+			b[2*i+0] = byte(u >> 8)
+			b[2*i+1] = byte(u)
+		}
 	}
 
 	return b
 }
 
 // Uint32ToBytes convert uint32 array to byte array
+// depending on host endianness
 func Uint32ToBytes(values []uint32) []byte {
 	b := make([]byte, 4*len(values))
 
-	u := make([]byte, 4)
-	for i, v := range values {
-		nativeEndian.PutUint32(u, v)
-		b[4*i] = u[0]
-		b[4*i+1] = u[1]
-		b[4*i+2] = u[2]
-		b[4*i+3] = u[3]
+	if nativeEndian == binary.LittleEndian {
+		for i, v := range values {
+			u := *(*uint32)(unsafe.Pointer(&v))
+			b[2*i+0] = byte(u)
+			b[2*i+1] = byte(u >> 8)
+			b[4*i+2] = byte(u >> 16)
+			b[4*i+3] = byte(u >> 24)
+		}
+	} else {
+		for i, v := range values {
+			u := *(*uint32)(unsafe.Pointer(&v))
+			b[4*i+0] = byte(u >> 24)
+			b[4*i+1] = byte(u >> 16)
+			b[4*i+2] = byte(u >> 8)
+			b[4*i+3] = byte(u)
+		}
 	}
 
 	return b
@@ -59,19 +76,19 @@ func Float32ToBytes(values []float32) []byte {
 
 	if nativeEndian == binary.LittleEndian {
 		for i, v := range values {
-			u := math.Float32bits(v)
-			b[4*i+0] = byte(u >> 0)
+			u := *(*uint32)(unsafe.Pointer(&v))
+			b[4*i+0] = byte(u)
 			b[4*i+1] = byte(u >> 8)
 			b[4*i+2] = byte(u >> 16)
 			b[4*i+3] = byte(u >> 24)
 		}
 	} else {
 		for i, v := range values {
-			u := math.Float32bits(v)
+			u := *(*uint32)(unsafe.Pointer(&v))
 			b[4*i+0] = byte(u >> 24)
 			b[4*i+1] = byte(u >> 16)
 			b[4*i+2] = byte(u >> 8)
-			b[4*i+3] = byte(u >> 0)
+			b[4*i+3] = byte(u)
 		}
 	}
 
@@ -85,8 +102,8 @@ func Float64ToBytes(values []float64) []byte {
 
 	if nativeEndian == binary.LittleEndian {
 		for i, v := range values {
-			u := math.Float64bits(v)
-			b[8*i+0] = byte(u >> 0)
+			u := *(*uint64)(unsafe.Pointer(&v))
+			b[8*i+0] = byte(u)
 			b[8*i+1] = byte(u >> 8)
 			b[8*i+2] = byte(u >> 16)
 			b[8*i+3] = byte(u >> 24)
@@ -97,7 +114,7 @@ func Float64ToBytes(values []float64) []byte {
 		}
 	} else {
 		for i, v := range values {
-			u := math.Float64bits(v)
+			u := *(*uint64)(unsafe.Pointer(&v))
 			b[8*i+0] = byte(u >> 56)
 			b[8*i+1] = byte(u >> 48)
 			b[8*i+2] = byte(u >> 40)
@@ -105,7 +122,7 @@ func Float64ToBytes(values []float64) []byte {
 			b[8*i+4] = byte(u >> 24)
 			b[8*i+5] = byte(u >> 16)
 			b[8*i+6] = byte(u >> 8)
-			b[8*i+7] = byte(u >> 0)
+			b[8*i+7] = byte(u)
 		}
 	}
 
@@ -123,24 +140,42 @@ func PointerToBytes(data interface{}, size int) []byte {
 		return b
 	case *uint16:
 		b := make([]byte, 2*size)
-		u := make([]byte, 2)
-		for i := 0; i < size; i++ {
-			v := *(*uint16)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*uint16))) + uintptr(i*2)))
-			nativeEndian.PutUint16(u, v)
-			b[2*i] = u[0]
-			b[2*i+1] = u[1]
+		if nativeEndian == binary.LittleEndian {
+			for i := 0; i < size; i++ {
+				v := *(*uint16)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*uint16))) + uintptr(i*4)))
+				u := *(*uint16)(unsafe.Pointer(&v))
+				b[2*i+0] = byte(u)
+				b[2*i+1] = byte(u >> 8)
+			}
+		} else {
+			for i := 0; i < size; i++ {
+				v := *(*uint16)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*uint16))) + uintptr(i*4)))
+				u := *(*uint16)(unsafe.Pointer(&v))
+				b[2*i+0] = byte(u >> 8)
+				b[2*i+1] = byte(u)
+			}
 		}
 		return b
 	case *uint32:
 		b := make([]byte, 4*size)
-		u := make([]byte, 4)
-		for i := 0; i < size; i++ {
-			v := *(*uint32)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*uint32))) + uintptr(i*4)))
-			nativeEndian.PutUint32(u, v)
-			b[4*i] = u[0]
-			b[4*i+1] = u[1]
-			b[4*i+2] = u[2]
-			b[4*i+3] = u[3]
+		if nativeEndian == binary.LittleEndian {
+			for i := 0; i < size; i++ {
+				v := *(*uint32)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*uint32))) + uintptr(i*4)))
+				u := *(*uint32)(unsafe.Pointer(&v))
+				b[4*i+0] = byte(u)
+				b[4*i+1] = byte(u >> 8)
+				b[4*i+2] = byte(u >> 16)
+				b[4*i+3] = byte(u >> 24)
+			}
+		} else {
+			for i := 0; i < size; i++ {
+				v := *(*uint32)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*uint32))) + uintptr(i*4)))
+				u := *(*uint32)(unsafe.Pointer(&v))
+				b[4*i+0] = byte(u >> 24)
+				b[4*i+1] = byte(u >> 16)
+				b[4*i+2] = byte(u >> 8)
+				b[4*i+3] = byte(u)
+			}
 		}
 		return b
 	case *float32:
@@ -148,8 +183,8 @@ func PointerToBytes(data interface{}, size int) []byte {
 		if nativeEndian == binary.LittleEndian {
 			for i := 0; i < size; i++ {
 				v := *(*float32)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*float32))) + uintptr(i*4)))
-				u := math.Float32bits(v)
-				b[4*i+0] = byte(u >> 0)
+				u := *(*uint32)(unsafe.Pointer(&v))
+				b[4*i+0] = byte(u)
 				b[4*i+1] = byte(u >> 8)
 				b[4*i+2] = byte(u >> 16)
 				b[4*i+3] = byte(u >> 24)
@@ -157,11 +192,11 @@ func PointerToBytes(data interface{}, size int) []byte {
 		} else {
 			for i := 0; i < size; i++ {
 				v := *(*float32)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*float32))) + uintptr(i*4)))
-				u := math.Float32bits(v)
+				u := *(*uint32)(unsafe.Pointer(&v))
 				b[4*i+0] = byte(u >> 24)
 				b[4*i+1] = byte(u >> 16)
 				b[4*i+2] = byte(u >> 8)
-				b[4*i+3] = byte(u >> 0)
+				b[4*i+3] = byte(u)
 			}
 		}
 		return b
@@ -170,8 +205,8 @@ func PointerToBytes(data interface{}, size int) []byte {
 		if nativeEndian == binary.LittleEndian {
 			for i := 0; i < size; i++ {
 				v := *(*float64)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*float64))) + uintptr(i*8)))
-				u := math.Float64bits(v)
-				b[8*i+0] = byte(u >> 0)
+				u := *(*uint64)(unsafe.Pointer(&v))
+				b[8*i+0] = byte(u)
 				b[8*i+1] = byte(u >> 8)
 				b[8*i+2] = byte(u >> 16)
 				b[8*i+3] = byte(u >> 24)
@@ -183,7 +218,7 @@ func PointerToBytes(data interface{}, size int) []byte {
 		} else {
 			for i := 0; i < size; i++ {
 				v := *(*float64)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*float64))) + uintptr(i*8)))
-				u := math.Float64bits(v)
+				u := *(*uint64)(unsafe.Pointer(&v))
 				b[8*i+0] = byte(u >> 56)
 				b[8*i+1] = byte(u >> 48)
 				b[8*i+2] = byte(u >> 40)
@@ -191,7 +226,7 @@ func PointerToBytes(data interface{}, size int) []byte {
 				b[8*i+4] = byte(u >> 24)
 				b[8*i+5] = byte(u >> 16)
 				b[8*i+6] = byte(u >> 8)
-				b[8*i+7] = byte(u >> 0)
+				b[8*i+7] = byte(u)
 			}
 		}
 		return b
