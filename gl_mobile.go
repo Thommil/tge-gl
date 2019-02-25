@@ -9,8 +9,8 @@ package gl
 import (
 	fmt "fmt"
 
-	gl "github.com/thommil/mobile/gl"
 	tge "github.com/thommil/tge"
+	gl "github.com/thommil/tge-mobile/gl"
 )
 
 type plugin struct {
@@ -92,6 +92,13 @@ func BindRenderbuffer(target Enum, rb Renderbuffer) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBindTexture.xhtml
 func BindTexture(target Enum, t Texture) {
 	_pluginInstance.glContext.BindTexture(gl.Enum(target), gl.Texture{t.Value})
+}
+
+// BindVertexArray binds a vertex array.
+//
+// http://www.khronos.org/opengles/sdk/docs/man3/html/glBindVertexArray.xhtml
+func BindVertexArray(rb VertexArray) {
+	_pluginInstance.glContext.BindVertexArray(gl.VertexArray{rb.Value})
 }
 
 // BlendColor sets the blend color.
@@ -275,6 +282,13 @@ func CreateTexture() Texture {
 	return Texture{_pluginInstance.glContext.CreateTexture().Value}
 }
 
+// CreateTVertexArray creates a vertex array.
+//
+// http://www.khronos.org/opengles/sdk/docs/man3/html/glGenVertexArrays.xhtml
+func CreateVertexArray() VertexArray {
+	return VertexArray{_pluginInstance.glContext.CreateTVertexArray().Value()}
+}
+
 // CullFace specifies which polygons are candidates for culling.
 //
 // Valid modes: FRONT, BACK, FRONT_AND_BACK.
@@ -324,6 +338,13 @@ func DeleteShader(s Shader) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteTextures.xhtml
 func DeleteTexture(v Texture) {
 	_pluginInstance.glContext.DeleteTexture(gl.Texture{v.Value})
+}
+
+// DeleteVertexArray deletes the given render buffer object.
+//
+// http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteVertexArrays.xhtml
+func DeleteVertexArray(v VertexArray) {
+	_pluginInstance.glContext.DeleteVertexArray(gl.VertexArray{v.Value})
 }
 
 // DepthFunc sets the function used for depth buffer comparisons.

@@ -73,6 +73,10 @@ func BindTexture(target Enum, t Texture) {
 	_pluginInstance.glContext.Call("bindTexture", int(target), t.Value)
 }
 
+func BindVertexArray(rb VertexArray) {
+	panic("BindVertexArray() not supported in Browser mode")
+}
+
 func BlendColor(red, green, blue, alpha float32) {
 	_pluginInstance.glContext.Call("blendColor", red, green, blue, alpha)
 }
@@ -175,6 +179,10 @@ func CreateTexture() Texture {
 	return Texture{Value: _pluginInstance.glContext.Call("createTexture")}
 }
 
+func CreateVertexArray() VertexArray {
+	panic("CreateVertexArray() not supported in Browser mode")
+}
+
 func CullFace(mode Enum) {
 	_pluginInstance.glContext.Call("cullFace", int(mode))
 }
@@ -201,6 +209,10 @@ func DeleteShader(s Shader) {
 
 func DeleteTexture(v Texture) {
 	_pluginInstance.glContext.Call("deleteTexture", v.Value)
+}
+
+func DeleteVertexArray(v VertexArray) {
+	panic("DeleteVertexArray() not supported in Browser mode")
 }
 
 func DepthFunc(fn Enum) {
