@@ -8,7 +8,7 @@ func TestPointerToBytes(t *testing.T) {
 
 }
 
-const NB_POLYGONS = 10000
+const NB_POLYGONS = 1000
 
 func BenchmarkUint16ToBytes(b *testing.B) {
 	uint16Array := make([]uint16, NB_POLYGONS*6)

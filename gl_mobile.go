@@ -9,8 +9,8 @@ package gl
 import (
 	fmt "fmt"
 
+	gl "github.com/thommil/mobile/gl"
 	tge "github.com/thommil/tge"
-	gl "golang.org/x/mobile/gl"
 )
 
 type plugin struct {
