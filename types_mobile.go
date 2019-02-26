@@ -114,11 +114,11 @@ func (v Texture) c() uintptr      { return uintptr(v.Value) }
 func (v Uniform) c() uintptr      { return uintptr(v.Value) }
 func (v VertexArray) c() uintptr  { return uintptr(v.Value) }
 
-func (v Program) Valid() bool      { return v.Value != NONE }
-func (v Shader) Valid() bool       { return v.Value != NONE }
-func (v Buffer) Valid() bool       { return v.Value != NONE }
-func (v Framebuffer) Valid() bool  { return v.Value != NONE }
-func (v Renderbuffer) Valid() bool { return v.Value != NONE }
-func (v Texture) Valid() bool      { return v.Value != NONE }
-func (v Uniform) Valid() bool      { return v.Value != NONE }
-func (v VertexArray) Valid() bool  { return v.Value != NONE }
+func (v Program) Valid() bool      { return v.Value >= 0 }
+func (v Shader) Valid() bool       { return v.Value >= 0 }
+func (v Buffer) Valid() bool       { return v.Value >= 0 }
+func (v Framebuffer) Valid() bool  { return v.Value >= 0 }
+func (v Renderbuffer) Valid() bool { return v.Value >= 0 }
+func (v Texture) Valid() bool      { return v.Value >= 0 }
+func (v Uniform) Valid() bool      { return v.Value >= 0 }
+func (v VertexArray) Valid() bool  { return v.Value >= 0 }
