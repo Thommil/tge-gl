@@ -2,11 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build darwin freebsd linux windows
-// +build !android
-// +build !ios
-// +build !js
-
 package gl
 
 // Enum is equivalent to GLenum, and is normally used with one of the
@@ -64,11 +59,6 @@ type VertexArray struct {
 	Value uint32
 }
 
-// AttribNone helper for unbind purpose
-var AttribNone = Attrib{
-	Value: NONE,
-}
-
 // ProgramNone helper for unbind purpose
 var ProgramNone = Program{
 	Value: NONE,
@@ -99,32 +89,16 @@ var TextureNone = Texture{
 	Value: NONE,
 }
 
-// UniformNone helper for unbind purpose
-var UniformNone = Uniform{
-	Value: NONE,
-}
-
 // VertexArrayNone helper for unbind purpose
 var VertexArrayNone = VertexArray{
 	Value: NONE,
 }
 
-func (v Attrib) c() uintptr       { return uintptr(v.Value) }
-func (v Enum) c() uintptr         { return uintptr(v) }
-func (v Program) c() uintptr      { return uintptr(v.Value) }
-func (v Shader) c() uintptr       { return uintptr(v.Value) }
-func (v Buffer) c() uintptr       { return uintptr(v.Value) }
-func (v Framebuffer) c() uintptr  { return uintptr(v.Value) }
-func (v Renderbuffer) c() uintptr { return uintptr(v.Value) }
-func (v Texture) c() uintptr      { return uintptr(v.Value) }
-func (v Uniform) c() uintptr      { return uintptr(v.Value) }
-func (v VertexArray) c() uintptr  { return uintptr(v.Value) }
-
-func (v Program) Valid() bool      { return v.Value >= 0 }
-func (v Shader) Valid() bool       { return v.Value >= 0 }
-func (v Buffer) Valid() bool       { return v.Value >= 0 }
-func (v Framebuffer) Valid() bool  { return v.Value >= 0 }
-func (v Renderbuffer) Valid() bool { return v.Value >= 0 }
-func (v Texture) Valid() bool      { return v.Value >= 0 }
+func (v Program) Valid() bool      { return v.Value > 0 }
+func (v Shader) Valid() bool       { return v.Value > 0 }
+func (v Buffer) Valid() bool       { return v.Value > 0 }
+func (v Framebuffer) Valid() bool  { return v.Value > 0 }
+func (v Renderbuffer) Valid() bool { return v.Value > 0 }
+func (v Texture) Valid() bool      { return v.Value > 0 }
 func (v Uniform) Valid() bool      { return v.Value >= 0 }
-func (v VertexArray) Valid() bool  { return v.Value >= 0 }
+func (v VertexArray) Valid() bool  { return v.Value > 0 }

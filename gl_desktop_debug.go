@@ -46,6 +46,11 @@ func GetPlugin() tge.Plugin {
 	return _pluginInstance
 }
 
+// GetGLSLVersion gives the glsl version ti put in #version ${VERSION}
+func GetGLSLVersion() string {
+	return "330 core"
+}
+
 // ActiveTexture sets the active texture unit.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glActiveTexture.xhtml

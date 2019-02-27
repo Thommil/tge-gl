@@ -43,6 +43,11 @@ func GetPlugin() tge.Plugin {
 	return _pluginInstance
 }
 
+// GetGLSLVersion gives the glsl version ti put in #version ${VERSION}
+func GetGLSLVersion() string {
+	return "300 es"
+}
+
 // ActiveTexture sets the active texture unit.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glActiveTexture.xhtml
@@ -286,7 +291,7 @@ func CreateTexture() Texture {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGenVertexArrays.xhtml
 func CreateVertexArray() VertexArray {
-	return VertexArray{_pluginInstance.glContext.CreateTVertexArray().Value()}
+	return VertexArray{_pluginInstance.glContext.CreateVertexArray().Value}
 }
 
 // CullFace specifies which polygons are candidates for culling.
@@ -789,6 +794,13 @@ func PixelStorei(pname Enum, param int32) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glPolygonOffset.xhtml
 func PolygonOffset(factor, units float32) {
 	_pluginInstance.glContext.PolygonOffset(factor, units)
+}
+
+// PolygonMode sets Polygon Mode.
+//
+// http://www.khronos.org/opengles/sdk/docs/man3/html/glPolygonMode.xhtml
+func PolygonMode(face, mode Enum) {
+	fmt.Printf("WARNING: PolygonMode not implemented\n")
 }
 
 // ReadPixels returns pixel data from a buffer.

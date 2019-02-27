@@ -11,6 +11,7 @@ import (
 	fmt "fmt"
 	math "math"
 	js "syscall/js"
+	"unsafe"
 
 	tge "github.com/thommil/tge"
 )
@@ -29,6 +30,15 @@ func (p *plugin) Init(runtime tge.Runtime) error {
 	default:
 		return fmt.Errorf("Runtime renderer must be a *syscall/js.Value")
 	}
+
+	programMap[ProgramNone.Value] = js.Null()
+	shaderMap[ShaderNone.Value] = js.Null()
+	bufferMap[BufferNone.Value] = js.Null()
+	framebufferMap[FramebufferNone.Value] = js.Null()
+	renderbufferMap[RenderbufferNone.Value] = js.Null()
+	textureMap[TextureNone.Value] = js.Null()
+	vertexArrayMap[VertexArrayNone.Value] = js.Null()
+
 	return nil
 }
 
@@ -45,36 +55,65 @@ func GetPlugin() tge.Plugin {
 	return _pluginInstance
 }
 
+// GetGLSLVersion gives the glsl version ti put in #version ${VERSION}
+func GetGLSLVersion() string {
+	return "300 es"
+}
+
+var programMap = make(map[uint32]js.Value)
+var programMapIndex = uint32(1)
+
+var shaderMap = make(map[uint32]js.Value)
+var shaderMapIndex = uint32(1)
+
+var bufferMap = make(map[uint32]js.Value)
+var bufferMapIndex = uint32(1)
+
+var framebufferMap = make(map[uint32]js.Value)
+var framebufferMapIndex = uint32(1)
+
+var renderbufferMap = make(map[uint32]js.Value)
+var renderbufferMapIndex = uint32(1)
+
+var textureMap = make(map[uint32]js.Value)
+var textureMapIndex = uint32(1)
+
+var uniformMap = make(map[int32]js.Value)
+var uniformMapIndex = int32(0)
+
+var vertexArrayMap = make(map[uint32]js.Value)
+var vertexArrayMapIndex = uint32(1)
+
 func ActiveTexture(texture Enum) {
 	_pluginInstance.glContext.Call("activeTexture", int(texture))
 }
 
 func AttachShader(p Program, s Shader) {
-	_pluginInstance.glContext.Call("attachShader", p.Value, s.Value)
+	_pluginInstance.glContext.Call("attachShader", programMap[p.Value], shaderMap[s.Value])
 }
 
 func BindAttribLocation(p Program, a Attrib, name string) {
-	_pluginInstance.glContext.Call("bindAttribLocation", p.Value, a.Value, name)
+	_pluginInstance.glContext.Call("bindAttribLocation", programMap[p.Value], a.Value, name)
 }
 
 func BindBuffer(target Enum, b Buffer) {
-	_pluginInstance.glContext.Call("bindBuffer", int(target), b.Value)
+	_pluginInstance.glContext.Call("bindBuffer", int(target), bufferMap[b.Value])
 }
 
 func BindFramebuffer(target Enum, fb Framebuffer) {
-	_pluginInstance.glContext.Call("bindFramebuffer", int(target), fb.Value)
+	_pluginInstance.glContext.Call("bindFramebuffer", int(target), framebufferMap[fb.Value])
 }
 
 func BindRenderbuffer(target Enum, rb Renderbuffer) {
-	_pluginInstance.glContext.Call("bindRenderbuffer", int(target), rb.Value)
+	_pluginInstance.glContext.Call("bindRenderbuffer", int(target), renderbufferMap[rb.Value])
 }
 
 func BindTexture(target Enum, t Texture) {
-	_pluginInstance.glContext.Call("bindTexture", int(target), t.Value)
+	_pluginInstance.glContext.Call("bindTexture", int(target), textureMap[t.Value])
 }
 
-func BindVertexArray(rb VertexArray) {
-	panic("BindVertexArray() not supported in Browser mode")
+func BindVertexArray(vao VertexArray) {
+	_pluginInstance.glContext.Call("bindVertexArray", vertexArrayMap[vao.Value])
 }
 
 func BlendColor(red, green, blue, alpha float32) {
@@ -136,7 +175,7 @@ func ColorMask(red, green, blue, alpha bool) {
 }
 
 func CompileShader(s Shader) {
-	_pluginInstance.glContext.Call("compileShader", s.Value)
+	_pluginInstance.glContext.Call("compileShader", shaderMap[s.Value])
 }
 
 func CompressedTexImage2D(target Enum, level int, internalformat Enum, width, height, border int, data []byte) {
@@ -156,31 +195,52 @@ func CopyTexSubImage2D(target Enum, level, xoffset, yoffset, x, y, width, height
 }
 
 func CreateBuffer() Buffer {
-	return Buffer{Value: _pluginInstance.glContext.Call("createBuffer")}
+	bufferMap[bufferMapIndex] = _pluginInstance.glContext.Call("createBuffer")
+	buffer := Buffer{Value: bufferMapIndex}
+	bufferMapIndex++
+	return buffer
 }
 
 func CreateFramebuffer() Framebuffer {
-	return Framebuffer{Value: _pluginInstance.glContext.Call("createFramebuffer")}
+	framebufferMap[framebufferMapIndex] = _pluginInstance.glContext.Call("createFramebuffer")
+	framebuffer := Framebuffer{Value: framebufferMapIndex}
+	framebufferMapIndex++
+	return framebuffer
 }
 
 func CreateProgram() Program {
-	return Program{Value: _pluginInstance.glContext.Call("createProgram")}
+	programMap[programMapIndex] = _pluginInstance.glContext.Call("createProgram")
+	program := Program{Init: true, Value: programMapIndex}
+	programMapIndex++
+	return program
 }
 
 func CreateRenderbuffer() Renderbuffer {
-	return Renderbuffer{Value: _pluginInstance.glContext.Call("createRenderbuffer")}
+	renderbufferMap[renderbufferMapIndex] = _pluginInstance.glContext.Call("createRenderbuffer")
+	renderbuffer := Renderbuffer{Value: renderbufferMapIndex}
+	renderbufferMapIndex++
+	return renderbuffer
 }
 
 func CreateShader(ty Enum) Shader {
-	return Shader{Value: _pluginInstance.glContext.Call("createShader", int(ty))}
+	shaderMap[shaderMapIndex] = _pluginInstance.glContext.Call("createShader", int(ty))
+	shader := Shader{Value: shaderMapIndex}
+	shaderMapIndex++
+	return shader
 }
 
 func CreateTexture() Texture {
-	return Texture{Value: _pluginInstance.glContext.Call("createTexture")}
+	textureMap[textureMapIndex] = _pluginInstance.glContext.Call("createTexture")
+	texture := Texture{Value: textureMapIndex}
+	textureMapIndex++
+	return texture
 }
 
 func CreateVertexArray() VertexArray {
-	panic("CreateVertexArray() not supported in Browser mode")
+	vertexArrayMap[vertexArrayMapIndex] = _pluginInstance.glContext.Call("createVertexArray")
+	vao := VertexArray{Value: vertexArrayMapIndex}
+	vertexArrayMapIndex++
+	return vao
 }
 
 func CullFace(mode Enum) {
@@ -188,35 +248,42 @@ func CullFace(mode Enum) {
 }
 
 func DeleteBuffer(v Buffer) {
-	_pluginInstance.glContext.Call("deleteBuffer", v.Value)
+	_pluginInstance.glContext.Call("deleteBuffer", bufferMap[v.Value])
+	delete(bufferMap, v.Value)
 }
 
 func DeleteFramebuffer(v Framebuffer) {
-	_pluginInstance.glContext.Call("deleteFramebuffer", v.Value)
+	_pluginInstance.glContext.Call("deleteFramebuffer", framebufferMap[v.Value])
+	delete(framebufferMap, v.Value)
 }
 
 func DeleteProgram(p Program) {
-	_pluginInstance.glContext.Call("deleteProgram", p.Value)
+	_pluginInstance.glContext.Call("deleteProgram", programMap[p.Value])
+	delete(programMap, p.Value)
 }
 
 func DeleteRenderbuffer(v Renderbuffer) {
-	_pluginInstance.glContext.Call("deleteRenderbuffer", v.Value)
+	_pluginInstance.glContext.Call("deleteRenderbuffer", renderbufferMap[v.Value])
+	delete(renderbufferMap, v.Value)
 }
 
 func DeleteShader(s Shader) {
-	_pluginInstance.glContext.Call("deleteShader", s.Value)
+	_pluginInstance.glContext.Call("deleteShader", shaderMap[s.Value])
+	delete(shaderMap, s.Value)
 }
 
 func DeleteTexture(v Texture) {
-	_pluginInstance.glContext.Call("deleteTexture", v.Value)
+	_pluginInstance.glContext.Call("deleteTexture", textureMap[v.Value])
+	delete(textureMap, v.Value)
 }
 
 func DeleteVertexArray(v VertexArray) {
-	panic("DeleteVertexArray() not supported in Browser mode")
+	_pluginInstance.glContext.Call("DeleteVertexArray", vertexArrayMap[v.Value])
+	delete(vertexArrayMap, v.Value)
 }
 
 func DepthFunc(fn Enum) {
-	_pluginInstance.glContext.Call("depthFunc", fn)
+	_pluginInstance.glContext.Call("depthFunc", uint32(fn))
 }
 
 func DepthMask(flag bool) {
@@ -228,7 +295,7 @@ func DepthRangef(n, f float32) {
 }
 
 func DetachShader(p Program, s Shader) {
-	_pluginInstance.glContext.Call("detachShader", p.Value, s.Value)
+	_pluginInstance.glContext.Call("detachShader", programMap[p.Value], shaderMap[s.Value])
 }
 
 func Disable(cap Enum) {
@@ -248,7 +315,7 @@ func DrawElements(mode Enum, count int, ty Enum, offset int) {
 }
 
 func Enable(cap Enum) {
-	_pluginInstance.glContext.Call("enable", int(cap))
+	_pluginInstance.glContext.Call("enable", uint32(cap))
 }
 
 func EnableVertexAttribArray(a Attrib) {
@@ -264,11 +331,11 @@ func Flush() {
 }
 
 func FramebufferRenderbuffer(target, attachment, rbTarget Enum, rb Renderbuffer) {
-	_pluginInstance.glContext.Call("framebufferRenderbuffer", target, attachment, int(rbTarget), rb.Value)
+	_pluginInstance.glContext.Call("framebufferRenderbuffer", target, attachment, int(rbTarget), renderbufferMap[rb.Value])
 }
 
 func FramebufferTexture2D(target, attachment, texTarget Enum, t Texture, level int) {
-	_pluginInstance.glContext.Call("framebufferTexture2D", target, attachment, int(texTarget), t.Value, level)
+	_pluginInstance.glContext.Call("framebufferTexture2D", target, attachment, int(texTarget), textureMap[t.Value], level)
 }
 
 func FrontFace(mode Enum) {
@@ -280,26 +347,28 @@ func GenerateMipmap(target Enum) {
 }
 
 func GetActiveAttrib(p Program, index uint32) (name string, size int, ty Enum) {
-	ai := _pluginInstance.glContext.Call("getActiveAttrib", p.Value, index)
+	ai := _pluginInstance.glContext.Call("getActiveAttrib", programMap[p.Value], index)
 	return ai.Get("name").String(), ai.Get("size").Int(), Enum(ai.Get("type").Int())
 }
 
 func GetActiveUniform(p Program, index uint32) (name string, size int, ty Enum) {
-	ai := _pluginInstance.glContext.Call("getActiveUniform", p.Value, index)
+	ai := _pluginInstance.glContext.Call("getActiveUniform", programMap[p.Value], index)
 	return ai.Get("name").String(), ai.Get("size").Int(), Enum(ai.Get("type").Int())
 }
 
 func GetAttachedShaders(p Program) []Shader {
-	objs := _pluginInstance.glContext.Call("getAttachedShaders", p.Value)
-	shaders := make([]Shader, objs.Length())
-	for i := 0; i < objs.Length(); i++ {
-		shaders[i] = Shader{Value: objs.Index(i)}
-	}
-	return shaders
+	// objs := _pluginInstance.glContext.Call("getAttachedShaders", p.Value)
+	// shaders := make([]Shader, objs.Length())
+	// for i := 0; i < objs.Length(); i++ {
+	// 	shaders[i] = Shader{Value: objs.Index(i)}
+	// }
+	// return shaders
+	fmt.Printf("WARNING: GetAttachedShaders not implemented\n")
+	return []Shader{}
 }
 
 func GetAttribLocation(p Program, name string) Attrib {
-	return Attrib{Value: _pluginInstance.glContext.Call("getAttribLocation", p.Value, name).Int()}
+	return Attrib{Value: uint(_pluginInstance.glContext.Call("getAttribLocation", programMap[p.Value], name).Int())}
 }
 
 func GetBooleanv(dst []bool, pname Enum) {
@@ -341,7 +410,10 @@ func GetError() Enum {
 }
 
 func GetBoundFramebuffer() Framebuffer {
-	return Framebuffer{Value: _pluginInstance.glContext.Call("getParameter", FRAMEBUFFER_BINDING)}
+	//fb := _pluginInstance.glContext.Call("getParameter", FRAMEBUFFER_BINDING)
+	fmt.Printf("WARNING: GetAttachedShaders not implemented\n")
+	//return Framebuffer{Value: _pluginInstance.glContext.Call("getParameter", FRAMEBUFFER_BINDING)}
+	return FramebufferNone
 }
 
 func GetFramebufferAttachmentParameteri(target, attachment, pname Enum) int {
@@ -351,17 +423,17 @@ func GetFramebufferAttachmentParameteri(target, attachment, pname Enum) int {
 func GetProgrami(p Program, pname Enum) int {
 	switch pname {
 	case DELETE_STATUS, LINK_STATUS, VALIDATE_STATUS:
-		if _pluginInstance.glContext.Call("getProgramParameter", p.Value, int(pname)).Bool() {
+		if _pluginInstance.glContext.Call("getProgramParameter", programMap[p.Value], int(pname)).Bool() {
 			return TRUE
 		}
 		return FALSE
 	default:
-		return _pluginInstance.glContext.Call("getProgramParameter", p.Value, int(pname)).Int()
+		return _pluginInstance.glContext.Call("getProgramParameter", programMap[p.Value], int(pname)).Int()
 	}
 }
 
 func GetProgramInfoLog(p Program) string {
-	return _pluginInstance.glContext.Call("getProgramInfoLog", p.Value).String()
+	return _pluginInstance.glContext.Call("getProgramInfoLog", programMap[p.Value]).String()
 }
 
 func GetRenderbufferParameteri(target, pname Enum) int {
@@ -371,22 +443,21 @@ func GetRenderbufferParameteri(target, pname Enum) int {
 func GetShaderi(s Shader, pname Enum) int {
 	switch pname {
 	case DELETE_STATUS, COMPILE_STATUS:
-		if _pluginInstance.glContext.Call("getShaderParameter", s.Value, int(pname)).Bool() {
+		if _pluginInstance.glContext.Call("getShaderParameter", shaderMap[s.Value], int(pname)).Bool() {
 			return TRUE
 		}
 		return FALSE
 	default:
-		return _pluginInstance.glContext.Call("getShaderParameter", s.Value, int(pname)).Int()
+		return _pluginInstance.glContext.Call("getShaderParameter", shaderMap[s.Value], int(pname)).Int()
 	}
 }
 
 func GetShaderInfoLog(s Shader) string {
-	return _pluginInstance.glContext.Call("getShaderInfoLog", s.Value).String()
+	return _pluginInstance.glContext.Call("getShaderInfoLog", shaderMap[s.Value]).String()
 }
 
 func GetShaderPrecisionFormat(shadertype, precisiontype Enum) (rangeMin, rangeMax, precision int) {
-	println("GetShaderPrecisionFormat: not yet tested (TODO: remove this after it's confirmed to work. Your feedback is welcome.)")
-	format := _pluginInstance.glContext.Call("getShaderPrecisionFormat", shadertype, precisiontype)
+	format := _pluginInstance.glContext.Call("getShaderPrecisionFormat", uint32(shadertype), uint32(precisiontype))
 	rangeMin = format.Get("rangeMin").Int()
 	rangeMax = format.Get("rangeMax").Int()
 	precision = format.Get("precision").Int()
@@ -394,7 +465,7 @@ func GetShaderPrecisionFormat(shadertype, precisiontype Enum) (rangeMin, rangeMa
 }
 
 func GetShaderSource(s Shader) string {
-	return _pluginInstance.glContext.Call("getShaderSource", s.Value).String()
+	return _pluginInstance.glContext.Call("getShaderSource", shaderMap[s.Value]).String()
 }
 
 func GetString(pname Enum) string {
@@ -410,7 +481,6 @@ func GetTexParameteriv(dst []int32, target, pname Enum) {
 }
 
 func GetUniformfv(dst []float32, src Uniform, p Program) {
-	println("GetUniformfv: not yet tested (TODO: remove this after it's confirmed to work. Your feedback is welcome.)")
 	result := _pluginInstance.glContext.Call("getUniform")
 	length := result.Length()
 	for i := 0; i < length; i++ {
@@ -419,7 +489,6 @@ func GetUniformfv(dst []float32, src Uniform, p Program) {
 }
 
 func GetUniformiv(dst []int32, src Uniform, p Program) {
-	println("GetUniformiv: not yet tested (TODO: remove this after it's confirmed to work. Your feedback is welcome.)")
 	result := _pluginInstance.glContext.Call("getUniform")
 	length := result.Length()
 	for i := 0; i < length; i++ {
@@ -428,7 +497,11 @@ func GetUniformiv(dst []int32, src Uniform, p Program) {
 }
 
 func GetUniformLocation(p Program, name string) Uniform {
-	return Uniform{Value: _pluginInstance.glContext.Call("getUniformLocation", p.Value, name)}
+	uniform := _pluginInstance.glContext.Call("getUniformLocation", programMap[p.Value], name)
+	uniformIndex := *(*int32)(unsafe.Pointer(&uniform))
+	uniformMap[uniformIndex] = uniform
+	return Uniform{Value: uniformIndex}
+
 }
 
 func GetVertexAttribf(src Attrib, pname Enum) float32 {
@@ -436,7 +509,6 @@ func GetVertexAttribf(src Attrib, pname Enum) float32 {
 }
 
 func GetVertexAttribfv(dst []float32, src Attrib, pname Enum) {
-	println("GetVertexAttribfv: not yet tested (TODO: remove this after it's confirmed to work. Your feedback is welcome.)")
 	result := _pluginInstance.glContext.Call("getVertexAttrib")
 	length := result.Length()
 	for i := 0; i < length; i++ {
@@ -449,7 +521,6 @@ func GetVertexAttribi(src Attrib, pname Enum) int32 {
 }
 
 func GetVertexAttribiv(dst []int32, src Attrib, pname Enum) {
-	println("GetVertexAttribiv: not yet tested (TODO: remove this after it's confirmed to work. Your feedback is welcome.)")
 	result := _pluginInstance.glContext.Call("getVertexAttrib")
 	length := result.Length()
 	for i := 0; i < length; i++ {
@@ -462,7 +533,10 @@ func Hint(target, mode Enum) {
 }
 
 func IsBuffer(b Buffer) bool {
-	return _pluginInstance.glContext.Call("isBuffer", b.Value).Bool()
+	if buffer, found := bufferMap[b.Value]; found {
+		return _pluginInstance.glContext.Call("isBuffer", buffer).Bool()
+	}
+	return false
 }
 
 func IsEnabled(cap Enum) bool {
@@ -470,23 +544,38 @@ func IsEnabled(cap Enum) bool {
 }
 
 func IsFramebuffer(fb Framebuffer) bool {
-	return _pluginInstance.glContext.Call("isFramebuffer", fb.Value).Bool()
+	if framebuffer, found := framebufferMap[fb.Value]; found {
+		return _pluginInstance.glContext.Call("isFramebuffer", framebuffer).Bool()
+	}
+	return false
 }
 
 func IsProgram(p Program) bool {
-	return _pluginInstance.glContext.Call("isProgram", p.Value).Bool()
+	if program, found := programMap[p.Value]; found {
+		return _pluginInstance.glContext.Call("isProgram", program).Bool()
+	}
+	return false
 }
 
 func IsRenderbuffer(rb Renderbuffer) bool {
-	return _pluginInstance.glContext.Call("isRenderbuffer", rb.Value).Bool()
+	if renderbuffer, found := renderbufferMap[rb.Value]; found {
+		return _pluginInstance.glContext.Call("isRenderbuffer", renderbuffer).Bool()
+	}
+	return false
 }
 
 func IsShader(s Shader) bool {
-	return _pluginInstance.glContext.Call("isShader", s.Value).Bool()
+	if shader, found := shaderMap[s.Value]; found {
+		return _pluginInstance.glContext.Call("isShader", shader).Bool()
+	}
+	return false
 }
 
 func IsTexture(t Texture) bool {
-	return _pluginInstance.glContext.Call("isTexture", t.Value).Bool()
+	if texture, found := textureMap[t.Value]; found {
+		return _pluginInstance.glContext.Call("isTexture", texture).Bool()
+	}
+	return false
 }
 
 func LineWidth(width float32) {
@@ -494,7 +583,7 @@ func LineWidth(width float32) {
 }
 
 func LinkProgram(p Program) {
-	_pluginInstance.glContext.Call("linkProgram", p.Value)
+	_pluginInstance.glContext.Call("linkProgram", programMap[p.Value])
 }
 
 func PixelStorei(pname Enum, param int32) {
@@ -503,6 +592,10 @@ func PixelStorei(pname Enum, param int32) {
 
 func PolygonOffset(factor, units float32) {
 	_pluginInstance.glContext.Call("polygonOffset", factor, units)
+}
+
+func PolygonMode(face, mode Enum) {
+	fmt.Printf("WARNING: PolygonMode not implemented\n")
 }
 
 func ReadPixels(dst []byte, x, y, width, height int, format, ty Enum) {
@@ -523,7 +616,7 @@ func ReleaseShaderCompiler() {
 }
 
 func RenderbufferStorage(target, internalFormat Enum, width, height int) {
-	_pluginInstance.glContext.Call("renderbufferStorage", target, internalFormat, width, height)
+	_pluginInstance.glContext.Call("renderbufferStorage", target, uint32(internalFormat), width, height)
 }
 
 func SampleCoverage(value float32, invert bool) {
@@ -535,15 +628,15 @@ func Scissor(x, y, width, height int32) {
 }
 
 func ShaderSource(s Shader, src string) {
-	_pluginInstance.glContext.Call("shaderSource", s.Value, src)
+	_pluginInstance.glContext.Call("shaderSource", shaderMap[s.Value], src)
 }
 
 func StencilFunc(fn Enum, ref int, mask uint32) {
-	_pluginInstance.glContext.Call("stencilFunc", fn, ref, mask)
+	_pluginInstance.glContext.Call("stencilFunc", uint32(fn), ref, mask)
 }
 
 func StencilFuncSeparate(face, fn Enum, ref int, mask uint32) {
-	_pluginInstance.glContext.Call("stencilFuncSeparate", face, fn, ref, mask)
+	_pluginInstance.glContext.Call("stencilFuncSeparate", uint32(face), uint32(fn), ref, mask)
 }
 
 func StencilMask(mask uint32) {
@@ -551,15 +644,15 @@ func StencilMask(mask uint32) {
 }
 
 func StencilMaskSeparate(face Enum, mask uint32) {
-	_pluginInstance.glContext.Call("stencilMaskSeparate", face, mask)
+	_pluginInstance.glContext.Call("stencilMaskSeparate", uint32(face), mask)
 }
 
 func StencilOp(fail, zfail, zpass Enum) {
-	_pluginInstance.glContext.Call("stencilOp", fail, zfail, zpass)
+	_pluginInstance.glContext.Call("stencilOp", uint32(fail), uint32(zfail), uint32(zpass))
 }
 
 func StencilOpSeparate(face, sfail, dpfail, dppass Enum) {
-	_pluginInstance.glContext.Call("stencilOpSeparate", face, sfail, dpfail, dppass)
+	_pluginInstance.glContext.Call("stencilOpSeparate", uint32(face), uint32(sfail), uint32(dpfail), uint32(dppass))
 }
 
 func TexImage2D(target Enum, level int, width, height int, format Enum, ty Enum, data []byte) {
@@ -599,93 +692,109 @@ func TexParameteriv(target, pname Enum, params []int32) {
 }
 
 func Uniform1f(dst Uniform, v float32) {
-	_pluginInstance.glContext.Call("uniform1f", dst.Value, v)
+	_pluginInstance.glContext.Call("uniform1f", uniformMap[dst.Value], v)
 }
 
 func Uniform1fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Call("uniform1fv", dst.Value, src)
+	srcTA := js.TypedArrayOf(src)
+	_pluginInstance.glContext.Call("uniform1fv", uniformMap[dst.Value], srcTA)
+	srcTA.Release()
 }
 
 func Uniform1i(dst Uniform, v int) {
-	_pluginInstance.glContext.Call("uniform1i", dst.Value, v)
+	_pluginInstance.glContext.Call("uniform1i", uniformMap[dst.Value], v)
 }
 
 func Uniform1iv(dst Uniform, src []int32) {
-	_pluginInstance.glContext.Call("uniform1iv", dst.Value, src)
+	srcTA := js.TypedArrayOf(src)
+	_pluginInstance.glContext.Call("uniform1iv", uniformMap[dst.Value], srcTA)
+	srcTA.Release()
 }
 
 func Uniform2f(dst Uniform, v0, v1 float32) {
-	_pluginInstance.glContext.Call("uniform2f", dst.Value, v0, v1)
+	_pluginInstance.glContext.Call("uniform2f", uniformMap[dst.Value], v0, v1)
 }
 
 func Uniform2fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Call("uniform2fv", dst.Value, src)
+	srcTA := js.TypedArrayOf(src)
+	_pluginInstance.glContext.Call("uniform2fv", uniformMap[dst.Value], srcTA)
+	srcTA.Release()
 }
 
 func Uniform2i(dst Uniform, v0, v1 int) {
-	_pluginInstance.glContext.Call("uniform2i", dst.Value, v0, v1)
+	_pluginInstance.glContext.Call("uniform2i", uniformMap[dst.Value], v0, v1)
 }
 
 func Uniform2iv(dst Uniform, src []int32) {
-	_pluginInstance.glContext.Call("uniform2iv", dst.Value, src)
+	srcTA := js.TypedArrayOf(src)
+	_pluginInstance.glContext.Call("uniform2iv", uniformMap[dst.Value], srcTA)
+	srcTA.Release()
 }
 
 func Uniform3f(dst Uniform, v0, v1, v2 float32) {
-	_pluginInstance.glContext.Call("uniform3f", dst.Value, v0, v1, v2)
+	_pluginInstance.glContext.Call("uniform3f", uniformMap[dst.Value], v0, v1, v2)
 }
 
 func Uniform3fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Call("uniform3fv", dst.Value, src)
+	srcTA := js.TypedArrayOf(src)
+	_pluginInstance.glContext.Call("uniform3fv", uniformMap[dst.Value], srcTA)
+	srcTA.Release()
 }
 
 func Uniform3i(dst Uniform, v0, v1, v2 int32) {
-	_pluginInstance.glContext.Call("uniform3i", dst.Value, v0, v1, v2)
+	_pluginInstance.glContext.Call("uniform3i", uniformMap[dst.Value], v0, v1, v2)
 }
 
 func Uniform3iv(dst Uniform, src []int32) {
-	_pluginInstance.glContext.Call("uniform3iv", dst.Value, src)
+	srcTA := js.TypedArrayOf(src)
+	_pluginInstance.glContext.Call("uniform3iv", uniformMap[dst.Value], srcTA)
+	srcTA.Release()
 }
 
 func Uniform4f(dst Uniform, v0, v1, v2, v3 float32) {
-	_pluginInstance.glContext.Call("uniform4f", dst.Value, v0, v1, v2, v3)
+	_pluginInstance.glContext.Call("uniform4f", uniformMap[dst.Value], v0, v1, v2, v3)
 }
 
 func Uniform4fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Call("uniform4fv", dst.Value, src)
+	srcTA := js.TypedArrayOf(src)
+	_pluginInstance.glContext.Call("uniform4fv", uniformMap[dst.Value], srcTA)
+	srcTA.Release()
 }
 
 func Uniform4i(dst Uniform, v0, v1, v2, v3 int32) {
-	_pluginInstance.glContext.Call("uniform4i", dst.Value, v0, v1, v2, v3)
+	_pluginInstance.glContext.Call("uniform4i", uniformMap[dst.Value], v0, v1, v2, v3)
 }
 
 func Uniform4iv(dst Uniform, src []int32) {
-	_pluginInstance.glContext.Call("uniform4iv", dst.Value, src)
+	srcTA := js.TypedArrayOf(src)
+	_pluginInstance.glContext.Call("uniform4iv", uniformMap[dst.Value], srcTA)
+	srcTA.Release()
 }
 
 func UniformMatrix2fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Call("uniformMatrix2fv", dst.Value, false, src)
+	srcTA := js.TypedArrayOf(src)
+	_pluginInstance.glContext.Call("uniformMatrix2fv", uniformMap[dst.Value], false, srcTA)
+	srcTA.Release()
 }
 
 func UniformMatrix3fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Call("uniformMatrix3fv", dst.Value, false, src)
+	srcTA := js.TypedArrayOf(src)
+	_pluginInstance.glContext.Call("uniformMatrix3fv", uniformMap[dst.Value], false, srcTA)
+	srcTA.Release()
 }
 
 func UniformMatrix4fv(dst Uniform, src []float32) {
 	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniformMatrix4fv", dst.Value, false, srcTA)
+	_pluginInstance.glContext.Call("uniformMatrix4fv", uniformMap[dst.Value], false, srcTA)
 	srcTA.Release()
 }
 
 func UseProgram(p Program) {
-	// Workaround for js.Value zero value.
-	if p.Value == (js.Value{}) {
-		p.Value = js.Null()
-	}
-	_pluginInstance.glContext.Call("useProgram", p.Value)
+	_pluginInstance.glContext.Call("useProgram", programMap[p.Value])
 }
 
 func ValidateProgram(p Program) {
-	_pluginInstance.glContext.Call("validateProgram", p.Value)
+	_pluginInstance.glContext.Call("validateProgram", programMap[p.Value])
 }
 
 func VertexAttrib1f(dst Attrib, x float32) {

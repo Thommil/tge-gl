@@ -69,6 +69,54 @@ func Uint32ToBytes(values []uint32) []byte {
 	return b
 }
 
+// Int16ToBytes convert int16 array to byte array
+// depending on host endianness
+func Int16ToBytes(values []uint16) []byte {
+	b := make([]byte, 2*len(values))
+
+	if nativeEndian == binary.LittleEndian {
+		for i, v := range values {
+			u := *(*int16)(unsafe.Pointer(&v))
+			b[2*i+0] = byte(u)
+			b[2*i+1] = byte(u >> 8)
+		}
+	} else {
+		for i, v := range values {
+			u := *(*int16)(unsafe.Pointer(&v))
+			b[2*i+0] = byte(u >> 8)
+			b[2*i+1] = byte(u)
+		}
+	}
+
+	return b
+}
+
+// Int32ToBytes convert int32 array to byte array
+// depending on host endianness
+func Int32ToBytes(values []uint32) []byte {
+	b := make([]byte, 4*len(values))
+
+	if nativeEndian == binary.LittleEndian {
+		for i, v := range values {
+			u := *(*int32)(unsafe.Pointer(&v))
+			b[2*i+0] = byte(u)
+			b[2*i+1] = byte(u >> 8)
+			b[4*i+2] = byte(u >> 16)
+			b[4*i+3] = byte(u >> 24)
+		}
+	} else {
+		for i, v := range values {
+			u := *(*int32)(unsafe.Pointer(&v))
+			b[4*i+0] = byte(u >> 24)
+			b[4*i+1] = byte(u >> 16)
+			b[4*i+2] = byte(u >> 8)
+			b[4*i+3] = byte(u)
+		}
+	}
+
+	return b
+}
+
 // Float32ToBytes convert float32 array to byte array
 // depending on host endianness
 func Float32ToBytes(values []float32) []byte {
