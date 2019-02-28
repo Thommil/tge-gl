@@ -45,7 +45,7 @@ func (p *plugin) GetName() string {
 }
 
 func (p *plugin) Dispose() {
-	p.glContext = nil
+	FlushCache()
 }
 
 // GetPlugin returns plugin handler
@@ -56,6 +56,11 @@ func GetPlugin() tge.Plugin {
 // GetGLSLVersion gives the glsl version ti put in #version ${VERSION}
 func GetGLSLVersion() string {
 	return "300 es"
+}
+
+// FlushCache free memory cache, should be called between scenes
+func FlushCache() {
+
 }
 
 var programMap = make(map[uint32]js.Value)
@@ -355,12 +360,6 @@ func GetActiveUniform(p Program, index uint32) (name string, size int, ty Enum) 
 }
 
 func GetAttachedShaders(p Program) []Shader {
-	// objs := _pluginInstance.glContext.Call("getAttachedShaders", p.Value)
-	// shaders := make([]Shader, objs.Length())
-	// for i := 0; i < objs.Length(); i++ {
-	// 	shaders[i] = Shader{Value: objs.Index(i)}
-	// }
-	// return shaders
 	fmt.Printf("WARNING: GetAttachedShaders not implemented\n")
 	return []Shader{}
 }
@@ -370,7 +369,6 @@ func GetAttribLocation(p Program, name string) Attrib {
 }
 
 func GetBooleanv(dst []bool, pname Enum) {
-	println("GetBooleanv: not yet tested (TODO: remove this after it's confirmed to work. Your feedback is welcome.)")
 	result := _pluginInstance.glContext.Call("getParameter", int(pname))
 	length := result.Length()
 	for i := 0; i < length; i++ {
@@ -379,7 +377,6 @@ func GetBooleanv(dst []bool, pname Enum) {
 }
 
 func GetFloatv(dst []float32, pname Enum) {
-	println("GetFloatv: not yet tested (TODO: remove this after it's confirmed to work. Your feedback is welcome.)")
 	result := _pluginInstance.glContext.Call("getParameter", int(pname))
 	length := result.Length()
 	for i := 0; i < length; i++ {
@@ -408,9 +405,7 @@ func GetError() Enum {
 }
 
 func GetBoundFramebuffer() Framebuffer {
-	//fb := _pluginInstance.glContext.Call("getParameter", FRAMEBUFFER_BINDING)
 	fmt.Printf("WARNING: GetAttachedShaders not implemented\n")
-	//return Framebuffer{Value: _pluginInstance.glContext.Call("getParameter", FRAMEBUFFER_BINDING)}
 	return FramebufferNone
 }
 
@@ -597,7 +592,6 @@ func PolygonMode(face, mode Enum) {
 }
 
 func ReadPixels(dst []byte, x, y, width, height int, format, ty Enum) {
-	println("ReadPixels: not yet tested (TODO: remove this after it's confirmed to work. Your feedback is welcome.)")
 	if ty == Enum(UNSIGNED_BYTE) {
 		_pluginInstance.glContext.Call("readPixels", x, y, width, height, format, int(ty), dst)
 	} else {
@@ -610,7 +604,7 @@ func ReadPixels(dst []byte, x, y, width, height int, format, ty Enum) {
 }
 
 func ReleaseShaderCompiler() {
-	// do nothing
+	fmt.Printf("WARNING: ReleaseShaderCompiler not implemented\n")
 }
 
 func RenderbufferStorage(target, internalFormat Enum, width, height int) {
@@ -672,7 +666,6 @@ func TexParameterf(target, pname Enum, param float32) {
 }
 
 func TexParameterfv(target, pname Enum, params []float32) {
-	println("TexParameterfv: not yet tested (TODO: remove this after it's confirmed to work. Your feedback is welcome.)")
 	for _, param := range params {
 		_pluginInstance.glContext.Call("texParameterf", int(target), int(pname), param)
 	}
@@ -683,9 +676,36 @@ func TexParameteri(target, pname Enum, param int) {
 }
 
 func TexParameteriv(target, pname Enum, params []int32) {
-	println("TexParameteriv: not yet tested (TODO: remove this after it's confirmed to work. Your feedback is welcome.)")
 	for _, param := range params {
 		_pluginInstance.glContext.Call("texParameteri", int(target), int(pname), param)
+	}
+}
+
+var int32TypedArrayCacheMap = make(map[uintptr]*js.TypedArray)
+
+// No affectation if done due to magic coincidence bewteen this cache and syscall.js one \o/
+func getInt32TypedArrayFromCache(src []int32) *js.TypedArray {
+	key := uintptr(unsafe.Pointer(&src[0])) + uintptr(len(src))
+	if b, found := int32TypedArrayCacheMap[key]; found {
+		return b
+	} else {
+		b := js.TypedArrayOf(src)
+		int32TypedArrayCacheMap[key] = &b
+		return &b
+	}
+}
+
+var float32TypedArrayCacheMap = make(map[uintptr]*js.TypedArray)
+
+// Hack using backed array of js.TypeArray and internal cache of syscall/js
+func getFloat32TypedArrayFromCache(src []float32) *js.TypedArray {
+	key := uintptr(unsafe.Pointer(&src[0])) + uintptr(len(src))
+	if b, found := float32TypedArrayCacheMap[key]; found {
+		return b
+	} else {
+		b := js.TypedArrayOf(src)
+		float32TypedArrayCacheMap[key] = &b
+		return &b
 	}
 }
 
@@ -694,9 +714,7 @@ func Uniform1f(dst Uniform, v float32) {
 }
 
 func Uniform1fv(dst Uniform, src []float32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniform1fv", uniformMap[dst.Value], srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("uniform1fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCache(src))
 }
 
 func Uniform1i(dst Uniform, v int) {
@@ -704,9 +722,7 @@ func Uniform1i(dst Uniform, v int) {
 }
 
 func Uniform1iv(dst Uniform, src []int32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniform1iv", uniformMap[dst.Value], srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("uniform1iv", uniformMap[dst.Value], *getInt32TypedArrayFromCache(src))
 }
 
 func Uniform2f(dst Uniform, v0, v1 float32) {
@@ -714,9 +730,7 @@ func Uniform2f(dst Uniform, v0, v1 float32) {
 }
 
 func Uniform2fv(dst Uniform, src []float32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniform2fv", uniformMap[dst.Value], srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("uniform2fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCache(src))
 }
 
 func Uniform2i(dst Uniform, v0, v1 int) {
@@ -724,9 +738,7 @@ func Uniform2i(dst Uniform, v0, v1 int) {
 }
 
 func Uniform2iv(dst Uniform, src []int32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniform2iv", uniformMap[dst.Value], srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("uniform2iv", uniformMap[dst.Value], *getInt32TypedArrayFromCache(src))
 }
 
 func Uniform3f(dst Uniform, v0, v1, v2 float32) {
@@ -734,9 +746,7 @@ func Uniform3f(dst Uniform, v0, v1, v2 float32) {
 }
 
 func Uniform3fv(dst Uniform, src []float32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniform3fv", uniformMap[dst.Value], srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("uniform3fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCache(src))
 }
 
 func Uniform3i(dst Uniform, v0, v1, v2 int32) {
@@ -744,9 +754,7 @@ func Uniform3i(dst Uniform, v0, v1, v2 int32) {
 }
 
 func Uniform3iv(dst Uniform, src []int32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniform3iv", uniformMap[dst.Value], srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("uniform3iv", uniformMap[dst.Value], *getInt32TypedArrayFromCache(src))
 }
 
 func Uniform4f(dst Uniform, v0, v1, v2, v3 float32) {
@@ -754,9 +762,7 @@ func Uniform4f(dst Uniform, v0, v1, v2, v3 float32) {
 }
 
 func Uniform4fv(dst Uniform, src []float32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniform4fv", uniformMap[dst.Value], srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("uniform4fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCache(src))
 }
 
 func Uniform4i(dst Uniform, v0, v1, v2, v3 int32) {
@@ -764,27 +770,19 @@ func Uniform4i(dst Uniform, v0, v1, v2, v3 int32) {
 }
 
 func Uniform4iv(dst Uniform, src []int32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniform4iv", uniformMap[dst.Value], srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("uniform4iv", uniformMap[dst.Value], *getInt32TypedArrayFromCache(src))
 }
 
 func UniformMatrix2fv(dst Uniform, src []float32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniformMatrix2fv", uniformMap[dst.Value], false, srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("UniformMatrix2fv", uniformMap[dst.Value], false, *getFloat32TypedArrayFromCache(src))
 }
 
 func UniformMatrix3fv(dst Uniform, src []float32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniformMatrix3fv", uniformMap[dst.Value], false, srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("uniformMatrix3fv", uniformMap[dst.Value], false, *getFloat32TypedArrayFromCache(src))
 }
 
 func UniformMatrix4fv(dst Uniform, src []float32) {
-	srcTA := js.TypedArrayOf(src)
-	_pluginInstance.glContext.Call("uniformMatrix4fv", uniformMap[dst.Value], false, srcTA)
-	srcTA.Release()
+	_pluginInstance.glContext.Call("uniformMatrix4fv", uniformMap[dst.Value], false, *getFloat32TypedArrayFromCache(src))
 }
 
 func UseProgram(p Program) {

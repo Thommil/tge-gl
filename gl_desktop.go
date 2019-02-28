@@ -37,6 +37,7 @@ func (p *plugin) GetName() string {
 
 func (p *plugin) Dispose() {
 	p.isInit = false
+	FlushCache()
 }
 
 // GetPlugin returns plugin handler
@@ -47,6 +48,11 @@ func GetPlugin() tge.Plugin {
 // GetGLSLVersion gives the glsl version ti put in #version ${VERSION}
 func GetGLSLVersion() string {
 	return "330 core"
+}
+
+// FlushCache free memory cache, should be called between scenes
+func FlushCache() {
+
 }
 
 // ActiveTexture sets the active texture unit.

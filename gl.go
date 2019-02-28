@@ -22,10 +22,24 @@ func init() {
 	}
 }
 
+// Byte buffer array singleton, allocate 1mB at startup
+var byteArrayBuffer = make([]byte, (1024 * 1024))
+var extendFactor = 2
+
+func getByteArrayBuffer(size int) []byte {
+	if size > len(byteArrayBuffer) {
+		for (1024 * 1024 * extendFactor) < size {
+			extendFactor++
+		}
+		byteArrayBuffer = make([]byte, (1024 * 1024 * extendFactor))
+	}
+	return byteArrayBuffer[:size]
+}
+
 // Uint16ToBytes convert uint16 array to byte array
 // depending on host endianness
 func Uint16ToBytes(values []uint16) []byte {
-	b := make([]byte, 2*len(values))
+	b := getByteArrayBuffer(2 * len(values))
 
 	if nativeEndian == binary.LittleEndian {
 		for i, v := range values {
@@ -47,7 +61,7 @@ func Uint16ToBytes(values []uint16) []byte {
 // Uint32ToBytes convert uint32 array to byte array
 // depending on host endianness
 func Uint32ToBytes(values []uint32) []byte {
-	b := make([]byte, 4*len(values))
+	b := getByteArrayBuffer(4 * len(values))
 
 	if nativeEndian == binary.LittleEndian {
 		for i, v := range values {
@@ -73,7 +87,7 @@ func Uint32ToBytes(values []uint32) []byte {
 // Int16ToBytes convert int16 array to byte array
 // depending on host endianness
 func Int16ToBytes(values []uint16) []byte {
-	b := make([]byte, 2*len(values))
+	b := getByteArrayBuffer(2 * len(values))
 
 	if nativeEndian == binary.LittleEndian {
 		for i, v := range values {
@@ -95,7 +109,7 @@ func Int16ToBytes(values []uint16) []byte {
 // Int32ToBytes convert int32 array to byte array
 // depending on host endianness
 func Int32ToBytes(values []uint32) []byte {
-	b := make([]byte, 4*len(values))
+	b := getByteArrayBuffer(4 * len(values))
 
 	if nativeEndian == binary.LittleEndian {
 		for i, v := range values {
@@ -121,7 +135,7 @@ func Int32ToBytes(values []uint32) []byte {
 // Float32ToBytes convert float32 array to byte array
 // depending on host endianness
 func Float32ToBytes(values []float32) []byte {
-	b := make([]byte, 4*len(values))
+	b := getByteArrayBuffer(4 * len(values))
 
 	if nativeEndian == binary.LittleEndian {
 		for i, v := range values {
@@ -147,7 +161,7 @@ func Float32ToBytes(values []float32) []byte {
 // Float64ToBytes convert float64 array to byte array
 // depending on host endianness
 func Float64ToBytes(values []float64) []byte {
-	b := make([]byte, 8*len(values))
+	b := getByteArrayBuffer(8 * len(values))
 
 	if nativeEndian == binary.LittleEndian {
 		for i, v := range values {
@@ -182,13 +196,13 @@ func Float64ToBytes(values []float64) []byte {
 func PointerToBytes(data interface{}, size int) []byte {
 	switch data.(type) {
 	case *uint8:
-		b := make([]byte, size)
+		b := getByteArrayBuffer(size)
 		for i := 0; i < size; i++ {
 			b[i] = *(*uint8)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*uint8))) + uintptr(i)))
 		}
 		return b
 	case *uint16:
-		b := make([]byte, 2*size)
+		b := getByteArrayBuffer(2 * size)
 		if nativeEndian == binary.LittleEndian {
 			for i := 0; i < size; i++ {
 				v := *(*uint16)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*uint16))) + uintptr(i*4)))
@@ -206,7 +220,7 @@ func PointerToBytes(data interface{}, size int) []byte {
 		}
 		return b
 	case *uint32:
-		b := make([]byte, 4*size)
+		b := getByteArrayBuffer(4 * size)
 		if nativeEndian == binary.LittleEndian {
 			for i := 0; i < size; i++ {
 				v := *(*uint32)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*uint32))) + uintptr(i*4)))
@@ -228,7 +242,7 @@ func PointerToBytes(data interface{}, size int) []byte {
 		}
 		return b
 	case *float32:
-		b := make([]byte, 4*size)
+		b := getByteArrayBuffer(4 * size)
 		if nativeEndian == binary.LittleEndian {
 			for i := 0; i < size; i++ {
 				v := *(*float32)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*float32))) + uintptr(i*4)))
@@ -250,7 +264,7 @@ func PointerToBytes(data interface{}, size int) []byte {
 		}
 		return b
 	case *float64:
-		b := make([]byte, 8*size)
+		b := getByteArrayBuffer(8 * size)
 		if nativeEndian == binary.LittleEndian {
 			for i := 0; i < size; i++ {
 				v := *(*float64)(unsafe.Pointer(uintptr(unsafe.Pointer(data.(*float64))) + uintptr(i*8)))

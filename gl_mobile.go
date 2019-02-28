@@ -34,6 +34,7 @@ func (p *plugin) GetName() string {
 
 func (p *plugin) Dispose() {
 	p.glContext = nil
+	FlushCache()
 }
 
 // GetPlugin returns plugin handler
@@ -44,6 +45,11 @@ func GetPlugin() tge.Plugin {
 // GetGLSLVersion gives the glsl version ti put in #version ${VERSION}
 func GetGLSLVersion() string {
 	return "300 es"
+}
+
+// FlushCache free memory cache, should be called between scenes
+func FlushCache() {
+
 }
 
 // ActiveTexture sets the active texture unit.
@@ -1152,14 +1158,6 @@ func VertexAttrib4fv(dst Attrib, src []float32) {
 }
 
 // VertexAttribPointer uses a bound buffer to define vertex attribute data.
-//
-// Direct use of VertexAttribPointer to load data into OpenGL is not
-// supported via the Go bindings. Instead, use BindBuffer with an
-// ARRAY_BUFFER and then fill it using BufferData.
-//
-// The size argument specifies the number of components per attribute,
-// between 1-4. The stride argument specifies the byte offset between
-// consecutive vertex attributes.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttribPointer.xhtml
 func VertexAttribPointer(dst Attrib, size int, ty Enum, normalized bool, stride, offset int) {
