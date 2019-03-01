@@ -6,6 +6,7 @@ package gl
 
 import (
 	fmt "fmt"
+	unsafe "unsafe"
 
 	tge "github.com/thommil/tge"
 	gl "github.com/thommil/tge-mobile/gl"
@@ -948,6 +949,14 @@ func Uniform1fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.Uniform1fv(gl.Uniform{dst.Value}, src)
 }
 
+func Uniform1fvP(dst Uniform, count int32, value *float32) {
+	fmt.Println("Uniform1fvP")
+}
+
+func Uniform1fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	fmt.Println("Uniform1fvUP")
+}
+
 // Uniform1i writes an int uniform variable.
 //
 // Uniform1i and Uniform1iv are the only two functions that may be used
@@ -970,6 +979,14 @@ func Uniform1iv(dst Uniform, src []int32) {
 	_pluginInstance.glContext.Uniform1iv(gl.Uniform{dst.Value}, src)
 }
 
+func Uniform1ivP(dst Uniform, count int32, value *int32) {
+	_pluginInstance.glContext.Uniform1ivP(gl.Uniform{dst.Value}, count, value)
+}
+
+func Uniform1ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Uniform1ivUP(gl.Uniform{dst.Value}, count, value)
+}
+
 // Uniform2f writes a vec2 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
@@ -982,6 +999,14 @@ func Uniform2f(dst Uniform, v0, v1 float32) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform2fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.Uniform2fv(gl.Uniform{dst.Value}, src)
+}
+
+func Uniform2fvP(dst Uniform, count int32, value *float32) {
+	_pluginInstance.glContext.Uniform2fvP(gl.Uniform{dst.Value}, count, value)
+}
+
+func Uniform2fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Uniform2fvUP(gl.Uniform{dst.Value}, count, value)
 }
 
 // Uniform2i writes an ivec2 uniform variable.
@@ -998,6 +1023,14 @@ func Uniform2iv(dst Uniform, src []int32) {
 	_pluginInstance.glContext.Uniform2iv(gl.Uniform{dst.Value}, src)
 }
 
+func Uniform2ivP(dst Uniform, count int32, value *int32) {
+	_pluginInstance.glContext.Uniform2ivP(gl.Uniform{dst.Value}, count, value)
+}
+
+func Uniform2ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Uniform2ivUP(gl.Uniform{dst.Value}, count, value)
+}
+
 // Uniform3f writes a vec3 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
@@ -1010,6 +1043,14 @@ func Uniform3f(dst Uniform, v0, v1, v2 float32) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform3fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.Uniform3fv(gl.Uniform{dst.Value}, src)
+}
+
+func Uniform3fvP(dst Uniform, count int32, value *float32) {
+	_pluginInstance.glContext.Uniform3fvP(gl.Uniform{dst.Value}, count, value)
+}
+
+func Uniform3fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Uniform3fvUP(gl.Uniform{dst.Value}, count, value)
 }
 
 // Uniform3i writes an ivec3 uniform variable.
@@ -1026,6 +1067,14 @@ func Uniform3iv(dst Uniform, src []int32) {
 	_pluginInstance.glContext.Uniform3iv(gl.Uniform{dst.Value}, src)
 }
 
+func Uniform3ivP(dst Uniform, count int32, value *int32) {
+	_pluginInstance.glContext.Uniform3ivP(gl.Uniform{dst.Value}, count, value)
+}
+
+func Uniform3ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Uniform3ivUP(gl.Uniform{dst.Value}, count, value)
+}
+
 // Uniform4f writes a vec4 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
@@ -1038,6 +1087,14 @@ func Uniform4f(dst Uniform, v0, v1, v2, v3 float32) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform4fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.Uniform4fv(gl.Uniform{dst.Value}, src)
+}
+
+func Uniform4fvP(dst Uniform, count int32, value *float32) {
+	_pluginInstance.glContext.Uniform4fvP(gl.Uniform{dst.Value}, count, value)
+}
+
+func Uniform4fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Uniform4fvUP(gl.Uniform{dst.Value}, count, value)
 }
 
 // Uniform4i writes an ivec4 uniform variable.
@@ -1054,6 +1111,14 @@ func Uniform4iv(dst Uniform, src []int32) {
 	_pluginInstance.glContext.Uniform4iv(gl.Uniform{dst.Value}, src)
 }
 
+func Uniform4ivP(dst Uniform, count int32, value *int32) {
+	_pluginInstance.glContext.Uniform4ivP(gl.Uniform{dst.Value}, count, value)
+}
+
+func Uniform4ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Uniform4ivUP(gl.Uniform{dst.Value}, count, value)
+}
+
 // UniformMatrix2fv writes 2x2 matrices. Each matrix uses four
 // float32 values, so the number of matrices written is len(src)/4.
 //
@@ -1062,6 +1127,14 @@ func Uniform4iv(dst Uniform, src []int32) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func UniformMatrix2fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.UniformMatrix2fv(gl.Uniform{dst.Value}, src)
+}
+
+func UniformMatrix2fvP(dst Uniform, count int32, transpose bool, value *float32) {
+	_pluginInstance.glContext.UniformMatrix2fvP(gl.Uniform{dst.Value}, count, value)
+}
+
+func UniformMatrix2fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
+	_pluginInstance.glContext.UniformMatrix2fvUP(gl.Uniform{dst.Value}, count, value)
 }
 
 // UniformMatrix3fv writes 3x3 matrices. Each matrix uses nine
@@ -1074,6 +1147,14 @@ func UniformMatrix3fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.UniformMatrix3fv(gl.Uniform{dst.Value}, src)
 }
 
+func UniformMatrix3fvP(dst Uniform, count int32, transpose bool, value *float32) {
+	_pluginInstance.glContext.UniformMatrix3fvP(gl.Uniform{dst.Value}, count, value)
+}
+
+func UniformMatrix3fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
+	_pluginInstance.glContext.UniformMatrix3fvUP(gl.Uniform{dst.Value}, count, value)
+}
+
 // UniformMatrix4fv writes 4x4 matrices. Each matrix uses 16
 // float32 values, so the number of matrices written is len(src)/16.
 //
@@ -1082,6 +1163,14 @@ func UniformMatrix3fv(dst Uniform, src []float32) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func UniformMatrix4fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.UniformMatrix4fv(gl.Uniform{dst.Value}, src)
+}
+
+func UniformMatrix4fvP(dst Uniform, count int32, transpose bool, value *float32) {
+	_pluginInstance.glContext.UniformMatrix4fvP(gl.Uniform{dst.Value}, count, value)
+}
+
+func UniformMatrix4fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
+	_pluginInstance.glContext.UniformMatrix4fvUP(gl.Uniform{dst.Value}, count, value)
 }
 
 // UseProgram sets the active program.

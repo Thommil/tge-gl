@@ -1026,6 +1026,20 @@ func Uniform1fv(dst Uniform, src []float32) {
 	}
 }
 
+// Uniform1fvP Pointer version of Uniform1fv (faster)
+func Uniform1fvP(dst Uniform, count int32, value *float32) {
+	if dst.Valid() {
+		gl.Uniform1fv(dst.Value, count, value)
+	}
+}
+
+// Uniform1fvUP Unsafe Pointer version of Uniform1fv (faster)
+func Uniform1fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.Uniform1fv(dst.Value, count, (*float32)(value))
+	}
+}
+
 // Uniform1i writes an int uniform variable.
 //
 // Uniform1i and Uniform1iv are the only two functions that may be used
@@ -1052,6 +1066,20 @@ func Uniform1iv(dst Uniform, src []int32) {
 	}
 }
 
+// Uniform1ivP Pointer version of Uniform1iv (faster)
+func Uniform1ivP(dst Uniform, count int32, value *int32) {
+	if dst.Valid() {
+		gl.Uniform1iv(dst.Value, count, value)
+	}
+}
+
+// Uniform1ivUP Unsafe Pointer version of Uniform1iv (faster)
+func Uniform1ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.Uniform1iv(dst.Value, count, (*int32)(value))
+	}
+}
+
 // Uniform2f writes a vec2 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
@@ -1067,6 +1095,20 @@ func Uniform2f(dst Uniform, v0, v1 float32) {
 func Uniform2fv(dst Uniform, src []float32) {
 	if dst.Valid() {
 		gl.Uniform2fv(dst.Value, int32(len(src)/2), &src[0])
+	}
+}
+
+// Uniform2fvP Pointer version of Uniform2fv (faster)
+func Uniform2fvP(dst Uniform, count int32, value *float32) {
+	if dst.Valid() {
+		gl.Uniform2fv(dst.Value, count, value)
+	}
+}
+
+// Uniform2fvUP Unsafe Pointer version of Uniform2fv (faster)
+func Uniform2fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.Uniform2fv(dst.Value, count, (*float32)(value))
 	}
 }
 
@@ -1088,6 +1130,20 @@ func Uniform2iv(dst Uniform, src []int32) {
 	}
 }
 
+// Uniform2ivP Pointer version of Uniform2iv (faster)
+func Uniform2ivP(dst Uniform, count int32, value *int32) {
+	if dst.Valid() {
+		gl.Uniform2iv(dst.Value, count, value)
+	}
+}
+
+// Uniform2ivUP Unsafe Pointer version of Uniform2iv (faster)
+func Uniform2ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.Uniform2iv(dst.Value, count, (*int32)(value))
+	}
+}
+
 // Uniform3f writes a vec3 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
@@ -1103,6 +1159,20 @@ func Uniform3f(dst Uniform, v0, v1, v2 float32) {
 func Uniform3fv(dst Uniform, src []float32) {
 	if dst.Valid() {
 		gl.Uniform3fv(dst.Value, int32(len(src)/3), &src[0])
+	}
+}
+
+// Uniform3fvP Pointer version of Uniform3fv (faster)
+func Uniform3fvP(dst Uniform, count int32, value *float32) {
+	if dst.Valid() {
+		gl.Uniform3fv(dst.Value, count, value)
+	}
+}
+
+// Uniform3fvUP Unsafe Pointer version of Uniform3fv (faster)
+func Uniform3fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.Uniform3fv(dst.Value, count, (*float32)(value))
 	}
 }
 
@@ -1124,6 +1194,20 @@ func Uniform3iv(dst Uniform, src []int32) {
 	}
 }
 
+// Uniform3ivP Pointer version of Uniform3iv (faster)
+func Uniform3ivP(dst Uniform, count int32, value *int32) {
+	if dst.Valid() {
+		gl.Uniform3iv(dst.Value, count, value)
+	}
+}
+
+// Uniform3ivUP Unsafe Pointer version of Uniform3iv (faster)
+func Uniform3ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.Uniform3iv(dst.Value, count, (*int32)(value))
+	}
+}
+
 // Uniform4f writes a vec4 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
@@ -1139,6 +1223,20 @@ func Uniform4f(dst Uniform, v0, v1, v2, v3 float32) {
 func Uniform4fv(dst Uniform, src []float32) {
 	if dst.Valid() {
 		gl.Uniform4fv(dst.Value, int32(len(src)/4), &src[0])
+	}
+}
+
+// Uniform4fvP Pointer version of Uniform4fv (faster)
+func Uniform4fvP(dst Uniform, count int32, value *float32) {
+	if dst.Valid() {
+		gl.Uniform4fv(dst.Value, count, value)
+	}
+}
+
+// Uniform4fvUP Unsafe Pointer version of Uniform4fv (faster)
+func Uniform4fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.Uniform4fv(dst.Value, count, (*float32)(value))
 	}
 }
 
@@ -1160,15 +1258,43 @@ func Uniform4iv(dst Uniform, src []int32) {
 	}
 }
 
+// Uniform4ivP Pointer version of Uniform4iv (faster)
+func Uniform4ivP(dst Uniform, count int32, value *int32) {
+	if dst.Valid() {
+		gl.Uniform4iv(dst.Value, count, value)
+	}
+}
+
+// Uniform4ivUP Unsafe Pointer version of Uniform4iv (faster)
+func Uniform4ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.Uniform4iv(dst.Value, count, (*int32)(value))
+	}
+}
+
 // UniformMatrix2fv writes 2x2 matrices. Each matrix uses four
 // float32 values, so the number of matrices written is len(src)/4.
 //
 // Each matrix must be supplied in column major order.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
-func UniformMatrix2fv(dst Uniform, src []float32) {
+func UniformMatrix2fv(dst Uniform, transpose bool, src []float32) {
 	if dst.Valid() {
-		gl.UniformMatrix2fv(dst.Value, int32(len(src)/(2*2)), false, &src[0])
+		gl.UniformMatrix2fv(dst.Value, int32(len(src)/(2*2)), transpose, &src[0])
+	}
+}
+
+// UniformMatrix2fvP Pointer version of UniformMatrix2fv (faster)
+func UniformMatrix2fvP(dst Uniform, count int32, transpose bool, value *float32) {
+	if dst.Valid() {
+		gl.UniformMatrix2fv(dst.Value, count, transpose, value)
+	}
+}
+
+// UniformMatrix2fvUP Unsafe Pointer version of UniformMatrix2fv (faster)
+func UniformMatrix2fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.UniformMatrix2fv(dst.Value, count, transpose, (*float32)(value))
 	}
 }
 
@@ -1178,9 +1304,23 @@ func UniformMatrix2fv(dst Uniform, src []float32) {
 // Each matrix must be supplied in column major order.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
-func UniformMatrix3fv(dst Uniform, src []float32) {
+func UniformMatrix3fv(dst Uniform, transpose bool, src []float32) {
 	if dst.Valid() {
-		gl.UniformMatrix3fv(dst.Value, int32(len(src)/(3*3)), false, &src[0])
+		gl.UniformMatrix3fv(dst.Value, int32(len(src)/(3*3)), transpose, &src[0])
+	}
+}
+
+// UniformMatrix3fvP Pointer version of UniformMatrix3fv (faster)
+func UniformMatrix3fvP(dst Uniform, count int32, transpose bool, value *float32) {
+	if dst.Valid() {
+		gl.UniformMatrix3fv(dst.Value, count, transpose, value)
+	}
+}
+
+// UniformMatrix3fvUP Unsafe Pointer version of UniformMatrix3fv (faster)
+func UniformMatrix3fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.UniformMatrix3fv(dst.Value, count, transpose, (*float32)(value))
 	}
 }
 
@@ -1190,9 +1330,23 @@ func UniformMatrix3fv(dst Uniform, src []float32) {
 // Each matrix must be supplied in column major order.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
-func UniformMatrix4fv(dst Uniform, src []float32) {
+func UniformMatrix4fv(dst Uniform, transpose bool, src []float32) {
 	if dst.Valid() {
-		gl.UniformMatrix4fv(dst.Value, int32(len(src)/(4*4)), false, &src[0])
+		gl.UniformMatrix4fv(dst.Value, int32(len(src)/(4*4)), transpose, &src[0])
+	}
+}
+
+// UniformMatrix4fvP Pointer version of UniformMatrix4fv (faster)
+func UniformMatrix4fvP(dst Uniform, count int32, transpose bool, value *float32) {
+	if dst.Valid() {
+		gl.UniformMatrix4fv(dst.Value, count, transpose, value)
+	}
+}
+
+// UniformMatrix4fvUP Unsafe Pointer version of UniformMatrix4fv (faster)
+func UniformMatrix4fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
+	if dst.Valid() {
+		gl.UniformMatrix4fv(dst.Value, count, transpose, (*float32)(value))
 	}
 }
 
@@ -1227,6 +1381,11 @@ func VertexAttrib1fv(dst Attrib, src []float32) {
 	gl.VertexAttrib1fv(uint32(dst.Value), &src[0])
 }
 
+// VertexAttrib1fvUP Unsafe Pointer version of VertexAttrib1fv (faster)
+func VertexAttrib1fvUP(dst Attrib, src *float32) {
+	gl.VertexAttrib1fv(uint32(dst.Value), src)
+}
+
 // VertexAttrib2f writes a vec2 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
@@ -1239,6 +1398,11 @@ func VertexAttrib2f(dst Attrib, x, y float32) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib2fv(dst Attrib, src []float32) {
 	gl.VertexAttrib2fv(uint32(dst.Value), &src[0])
+}
+
+// VertexAttrib2fvUP Unsafe Pointer version of VertexAttrib2fv (faster)
+func VertexAttrib2fvUP(dst Attrib, src *float32) {
+	gl.VertexAttrib2fv(uint32(dst.Value), src)
 }
 
 // VertexAttrib3f writes a vec3 vertex attribute.
@@ -1255,6 +1419,11 @@ func VertexAttrib3fv(dst Attrib, src []float32) {
 	gl.VertexAttrib3fv(uint32(dst.Value), &src[0])
 }
 
+// VertexAttrib3fvUP Unsafe Pointer version of VertexAttrib3fv (faster)
+func VertexAttrib3fvUP(dst Attrib, src *float32) {
+	gl.VertexAttrib3fv(uint32(dst.Value), src)
+}
+
 // VertexAttrib4f writes a vec4 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
@@ -1269,15 +1438,12 @@ func VertexAttrib4fv(dst Attrib, src []float32) {
 	gl.VertexAttrib4fv(uint32(dst.Value), &src[0])
 }
 
+// VertexAttrib4fvUP Unsafe Pointer version of VertexAttrib4fv (faster)
+func VertexAttrib4fvUP(dst Attrib, src *float32) {
+	gl.VertexAttrib4fv(uint32(dst.Value), src)
+}
+
 // VertexAttribPointer uses a bound buffer to define vertex attribute data.
-//
-// Direct use of VertexAttribPointer to load data into OpenGL is not
-// supported via the Go bindings. Instead, use BindBuffer with an
-// ARRAY_BUFFER and then fill it using BufferData.
-//
-// The size argument specifies the number of components per attribute,
-// between 1-4. The stride argument specifies the byte offset between
-// consecutive vertex attributes.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttribPointer.xhtml
 func VertexAttribPointer(dst Attrib, size int, ty Enum, normalized bool, stride, offset int) {

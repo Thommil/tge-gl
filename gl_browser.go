@@ -60,7 +60,12 @@ func GetGLSLVersion() string {
 
 // FlushCache free memory cache, should be called between scenes
 func FlushCache() {
-
+	for k, _ := range float32TypedArrayCacheMap {
+		delete(float32TypedArrayCacheMap, k)
+	}
+	for k, _ := range int32TypedArrayCacheMap {
+		delete(int32TypedArrayCacheMap, k)
+	}
 }
 
 var programMap = make(map[uint32]js.Value)
@@ -139,14 +144,15 @@ func BlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha Enum) 
 	_pluginInstance.glContext.Call("blendFuncSeparate", int(sfactorRGB), int(dfactorRGB), int(sfactorAlpha), int(dfactorAlpha))
 }
 
+func BufferInit(target Enum, size int, usage Enum) {
+	js.TypedArrayOf(getByteArrayBuffer(size))
+	_pluginInstance.glContext.Call("bufferData", int(target), size, int(usage))
+}
+
 func BufferData(target Enum, src []byte, usage Enum) {
 	srcTA := js.TypedArrayOf(src)
 	_pluginInstance.glContext.Call("bufferData", int(target), srcTA, int(usage))
 	srcTA.Release()
-}
-
-func BufferInit(target Enum, size int, usage Enum) {
-	_pluginInstance.glContext.Call("bufferData", int(target), size, int(usage))
 }
 
 func BufferSubData(target Enum, offset int, data []byte) {
@@ -681,6 +687,20 @@ func TexParameteriv(target, pname Enum, params []int32) {
 	}
 }
 
+// int32 array singleton, allocate 1KB at startup
+var int32ArrayBuffer = make([]int32, 1024)
+var int32ArrayBufferExtendFactor = 2
+
+func getInt32ArrayBuffer(size int) []int32 {
+	if size > len(int32ArrayBuffer) {
+		for (1024 * int32ArrayBufferExtendFactor) < size {
+			int32ArrayBufferExtendFactor++
+		}
+		int32ArrayBuffer = make([]int32, (1024 * int32ArrayBufferExtendFactor))
+	}
+	return int32ArrayBuffer[:size]
+}
+
 var int32TypedArrayCacheMap = make(map[uintptr]*js.TypedArray)
 
 // No affectation if done due to magic coincidence bewteen this cache and syscall.js one \o/
@@ -693,6 +713,36 @@ func getInt32TypedArrayFromCache(src []int32) *js.TypedArray {
 		int32TypedArrayCacheMap[key] = &b
 		return &b
 	}
+}
+
+func getInt32TypedArrayFromCacheP(size int, src *int32) *js.TypedArray {
+	b := getInt32ArrayBuffer(size)
+	for i := range b {
+		b[i] = *(*int32)(unsafe.Pointer(uintptr(unsafe.Pointer(src)) + uintptr(i*4)))
+	}
+	return getInt32TypedArrayFromCache(b)
+}
+
+func getInt32TypedArrayFromCacheUP(size int, src unsafe.Pointer) *js.TypedArray {
+	b := getInt32ArrayBuffer(size)
+	for i := range b {
+		b[i] = *(*int32)(unsafe.Pointer(uintptr(src) + uintptr(i*4)))
+	}
+	return getInt32TypedArrayFromCache(b)
+}
+
+// float32 array singleton, allocate 1KB at startup
+var float32ArrayBuffer = make([]float32, 1024)
+var float32ArrayBufferExtendFactor = 2
+
+func getFloat32ArrayBuffer(size int) []float32 {
+	if size > len(float32ArrayBuffer) {
+		for (1024 * float32ArrayBufferExtendFactor) < size {
+			float32ArrayBufferExtendFactor++
+		}
+		float32ArrayBuffer = make([]float32, (1024 * float32ArrayBufferExtendFactor))
+	}
+	return float32ArrayBuffer[:size]
 }
 
 var float32TypedArrayCacheMap = make(map[uintptr]*js.TypedArray)
@@ -709,12 +759,36 @@ func getFloat32TypedArrayFromCache(src []float32) *js.TypedArray {
 	}
 }
 
+func getFloat32TypedArrayFromCacheP(size int, src *float32) *js.TypedArray {
+	b := getFloat32ArrayBuffer(size)
+	for i := range b {
+		b[i] = *(*float32)(unsafe.Pointer(uintptr(unsafe.Pointer(src)) + uintptr(i*4)))
+	}
+	return getFloat32TypedArrayFromCache(b)
+}
+
+func getFloat32TypedArrayFromCacheUP(size int, src unsafe.Pointer) *js.TypedArray {
+	b := getFloat32ArrayBuffer(size)
+	for i := range b {
+		b[i] = *(*float32)(unsafe.Pointer(uintptr(src) + uintptr(i*4)))
+	}
+	return getFloat32TypedArrayFromCache(b)
+}
+
 func Uniform1f(dst Uniform, v float32) {
 	_pluginInstance.glContext.Call("uniform1f", uniformMap[dst.Value], v)
 }
 
 func Uniform1fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.Call("uniform1fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCache(src))
+}
+
+func Uniform1fvP(dst Uniform, count int32, value *float32) {
+	_pluginInstance.glContext.Call("uniform1fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCacheP(int(count), value))
+}
+
+func Uniform1fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniform1fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCacheUP(int(count), value))
 }
 
 func Uniform1i(dst Uniform, v int) {
@@ -725,12 +799,28 @@ func Uniform1iv(dst Uniform, src []int32) {
 	_pluginInstance.glContext.Call("uniform1iv", uniformMap[dst.Value], *getInt32TypedArrayFromCache(src))
 }
 
+func Uniform1ivP(dst Uniform, count int32, value *int32) {
+	_pluginInstance.glContext.Call("uniform1iv", uniformMap[dst.Value], *getInt32TypedArrayFromCacheP(int(count), value))
+}
+
+func Uniform1ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniform1iv", uniformMap[dst.Value], *getInt32TypedArrayFromCacheUP(int(count), value))
+}
+
 func Uniform2f(dst Uniform, v0, v1 float32) {
 	_pluginInstance.glContext.Call("uniform2f", uniformMap[dst.Value], v0, v1)
 }
 
 func Uniform2fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.Call("uniform2fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCache(src))
+}
+
+func Uniform2fvP(dst Uniform, count int32, value *float32) {
+	_pluginInstance.glContext.Call("uniform2fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCacheP(int(count*2), value))
+}
+
+func Uniform2fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniform2fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCacheUP(int(count*2), value))
 }
 
 func Uniform2i(dst Uniform, v0, v1 int) {
@@ -741,12 +831,28 @@ func Uniform2iv(dst Uniform, src []int32) {
 	_pluginInstance.glContext.Call("uniform2iv", uniformMap[dst.Value], *getInt32TypedArrayFromCache(src))
 }
 
+func Uniform2ivP(dst Uniform, count int32, value *int32) {
+	_pluginInstance.glContext.Call("uniform2iv", uniformMap[dst.Value], *getInt32TypedArrayFromCacheP(int(count*2), value))
+}
+
+func Uniform2ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniform2iv", uniformMap[dst.Value], *getInt32TypedArrayFromCacheUP(int(count*2), value))
+}
+
 func Uniform3f(dst Uniform, v0, v1, v2 float32) {
 	_pluginInstance.glContext.Call("uniform3f", uniformMap[dst.Value], v0, v1, v2)
 }
 
 func Uniform3fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.Call("uniform3fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCache(src))
+}
+
+func Uniform3fvP(dst Uniform, count int32, value *float32) {
+	_pluginInstance.glContext.Call("uniform3fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCacheP(int(count*3), value))
+}
+
+func Uniform3fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniform3fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCacheUP(int(count*3), value))
 }
 
 func Uniform3i(dst Uniform, v0, v1, v2 int32) {
@@ -757,12 +863,28 @@ func Uniform3iv(dst Uniform, src []int32) {
 	_pluginInstance.glContext.Call("uniform3iv", uniformMap[dst.Value], *getInt32TypedArrayFromCache(src))
 }
 
+func Uniform3ivP(dst Uniform, count int32, value *int32) {
+	_pluginInstance.glContext.Call("uniform3iv", uniformMap[dst.Value], *getInt32TypedArrayFromCacheP(int(count*3), value))
+}
+
+func Uniform3ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniform3iv", uniformMap[dst.Value], *getInt32TypedArrayFromCacheUP(int(count*3), value))
+}
+
 func Uniform4f(dst Uniform, v0, v1, v2, v3 float32) {
 	_pluginInstance.glContext.Call("uniform4f", uniformMap[dst.Value], v0, v1, v2, v3)
 }
 
 func Uniform4fv(dst Uniform, src []float32) {
 	_pluginInstance.glContext.Call("uniform4fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCache(src))
+}
+
+func Uniform4fvP(dst Uniform, count int32, value *float32) {
+	_pluginInstance.glContext.Call("uniform4fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCacheP(int(count*4), value))
+}
+
+func Uniform4fvUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniform4fv", uniformMap[dst.Value], *getFloat32TypedArrayFromCacheUP(int(count*4), value))
 }
 
 func Uniform4i(dst Uniform, v0, v1, v2, v3 int32) {
@@ -773,16 +895,48 @@ func Uniform4iv(dst Uniform, src []int32) {
 	_pluginInstance.glContext.Call("uniform4iv", uniformMap[dst.Value], *getInt32TypedArrayFromCache(src))
 }
 
-func UniformMatrix2fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Call("UniformMatrix2fv", uniformMap[dst.Value], false, *getFloat32TypedArrayFromCache(src))
+func Uniform4ivP(dst Uniform, count int32, value *int32) {
+	_pluginInstance.glContext.Call("uniform4iv", uniformMap[dst.Value], *getInt32TypedArrayFromCacheP(int(count*4), value))
 }
 
-func UniformMatrix3fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Call("uniformMatrix3fv", uniformMap[dst.Value], false, *getFloat32TypedArrayFromCache(src))
+func Uniform4ivUP(dst Uniform, count int32, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniform4iv", uniformMap[dst.Value], *getInt32TypedArrayFromCacheUP(int(count*4), value))
 }
 
-func UniformMatrix4fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Call("uniformMatrix4fv", uniformMap[dst.Value], false, *getFloat32TypedArrayFromCache(src))
+func UniformMatrix2fv(dst Uniform, transpose bool, src []float32) {
+	_pluginInstance.glContext.Call("uniformMatrix2fv", uniformMap[dst.Value], transpose, *getFloat32TypedArrayFromCache(src))
+}
+
+func UniformMatrix2fvP(dst Uniform, count int32, transpose bool, value *float32) {
+	_pluginInstance.glContext.Call("uniformMatrix2fv", uniformMap[dst.Value], transpose, *getFloat32TypedArrayFromCacheP(int(count*4), value))
+}
+
+func UniformMatrix2fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniformMatrix2fv", uniformMap[dst.Value], transpose, *getFloat32TypedArrayFromCacheUP(int(count*4), value))
+}
+
+func UniformMatrix3fv(dst Uniform, transpose bool, src []float32) {
+	_pluginInstance.glContext.Call("uniformMatrix3fv", uniformMap[dst.Value], transpose, *getFloat32TypedArrayFromCache(src))
+}
+
+func UniformMatrix3fvP(dst Uniform, count int32, transpose bool, value *float32) {
+	_pluginInstance.glContext.Call("uniformMatrix3fv", uniformMap[dst.Value], transpose, *getFloat32TypedArrayFromCacheP(int(count*9), value))
+}
+
+func UniformMatrix3fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniformMatrix3fv", uniformMap[dst.Value], transpose, *getFloat32TypedArrayFromCacheUP(int(count*9), value))
+}
+
+func UniformMatrix4fv(dst Uniform, transpose bool, src []float32) {
+	_pluginInstance.glContext.Call("uniformMatrix4fv", uniformMap[dst.Value], transpose, *getFloat32TypedArrayFromCache(src))
+}
+
+func UniformMatrix4fvP(dst Uniform, count int32, transpose bool, value *float32) {
+	_pluginInstance.glContext.Call("uniformMatrix4fv", uniformMap[dst.Value], transpose, *getFloat32TypedArrayFromCacheP(int(count*16), value))
+}
+
+func UniformMatrix4fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
+	_pluginInstance.glContext.Call("uniformMatrix4fv", uniformMap[dst.Value], transpose, *getFloat32TypedArrayFromCacheUP(int(count*16), value))
 }
 
 func UseProgram(p Program) {
