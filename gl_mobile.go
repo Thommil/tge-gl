@@ -18,6 +18,11 @@ type plugin struct {
 
 var _pluginInstance = &plugin{}
 
+// GetInstance returns plugin handler
+func GetInstance() tge.Plugin {
+	return _pluginInstance
+}
+
 func (p *plugin) Init(runtime tge.Runtime) error {
 	renderer := runtime.GetRenderer()
 	switch renderer.(type) {
@@ -36,11 +41,6 @@ func (p *plugin) GetName() string {
 func (p *plugin) Dispose() {
 	p.glContext = nil
 	FlushCache()
-}
-
-// GetPlugin returns plugin handler
-func GetPlugin() tge.Plugin {
-	return _pluginInstance
 }
 
 // GetGLSLVersion gives the glsl version ti put in #version ${VERSION}
