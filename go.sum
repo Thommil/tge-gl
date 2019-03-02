@@ -1,8 +1,8 @@
 github.com/go-gl/gl v0.0.0-20181026044259-55b76b7df9d2 h1:78Hza2KHn2PX1jdydQnffaU2A/xM0g3Nx1xmMdep9Gk=
 github.com/go-gl/gl v0.0.0-20181026044259-55b76b7df9d2/go.mod h1:482civXOzJJCPzJ4ZOX/pwvXBWSnzD4OKMdH4ClKGbk=
-github.com/thommil/tge v0.0.0-20190220110039-8917d7283229 h1:tXDZ09UwMLdIRXE4JlpUKQpUbVapd5VvPzYZwIsTAKE=
-github.com/thommil/tge v0.0.0-20190220110039-8917d7283229/go.mod h1:MYlwyOfUBUfD/dCGVhqVBLinbmwvDPsevlyBZd09OR8=
+github.com/thommil/tge v0.0.0-20190302233316-b383189cfc31 h1:AmGGWLPQ4pS2Fw+LetlYzBHkuiRwzWaVxmsFAwUtv/0=
+github.com/thommil/tge v0.0.0-20190302233316-b383189cfc31/go.mod h1:b4aVfYUJFZ+S0y7ucXf3mNGAZgjr+XWC48hUP+g9He4=
+github.com/thommil/tge-mobile v0.0.0-20190301151748-91d5e211d0c8 h1:blEVqpVca/7YtIOc5FeVrSNSNAdYlMlj/ePgTDRdp8A=
+github.com/thommil/tge-mobile v0.0.0-20190301151748-91d5e211d0c8/go.mod h1:esUenx0eq059yhIVOB9vadnWk0+vDzKSIqrDR9o/T58=
 github.com/veandco/go-sdl2 v0.3.0 h1:IWYkHMp8V3v37NsKjszln8FFnX2+ab0538J371t+rss=
 github.com/veandco/go-sdl2 v0.3.0/go.mod h1:FB+kTpX9YTE+urhYiClnRzpOXbiWgaU3+5F2AB78DPg=
-golang.org/x/mobile v0.0.0-20190127143845-a42111704963 h1:2HSxAhImj2OpXsNjXSqfnv1xtqeCpDjwPB3o1DnQqKM=
-golang.org/x/mobile v0.0.0-20190127143845-a42111704963/go.mod h1:z+o9i4GpDbdi3rU15maQ/Ox0txvL9dWGYEHz965HBQE=
