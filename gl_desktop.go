@@ -4,7 +4,6 @@
 // +build !android
 // +build !ios
 // +build !js
-// +build !debug
 
 package gl
 
