@@ -3,6 +3,8 @@ github.com/go-gl/gl v0.0.0-20181026044259-55b76b7df9d2/go.mod h1:482civXOzJJCPzJ
 github.com/thommil/tge v0.0.0-20190303110109-969de669193f/go.mod h1:b4aVfYUJFZ+S0y7ucXf3mNGAZgjr+XWC48hUP+g9He4=
 github.com/thommil/tge v0.0.0-20190303155054-a75ac9aeb48f h1:Barbd4ceb1Ut5O0zznhKb0+OMKSAx5a0OmBPa3IJELc=
 github.com/thommil/tge v0.0.0-20190303155054-a75ac9aeb48f/go.mod h1:+lejuoFUXzOt7HoHeqE/60dT7ojlOafjRJNV6d9SVyo=
+github.com/thommil/tge v0.0.0-20190303171230-61d798b282c4 h1:Mghw+13odvZSD/89S1DJDq5/oI59gcoxwyhsGsvA7no=
+github.com/thommil/tge v0.0.0-20190303171230-61d798b282c4/go.mod h1:+lejuoFUXzOt7HoHeqE/60dT7ojlOafjRJNV6d9SVyo=
 github.com/thommil/tge-mobile v0.0.0-20190301151748-91d5e211d0c8/go.mod h1:esUenx0eq059yhIVOB9vadnWk0+vDzKSIqrDR9o/T58=
 github.com/thommil/tge-mobile v0.0.0-20190303154902-d08630cc2c91/go.mod h1:J7jrg6A0+2eUmgJpiKWBEJKxCdjjTD1+GYzyTu8vE2c=
 github.com/veandco/go-sdl2 v0.3.0 h1:IWYkHMp8V3v37NsKjszln8FFnX2+ab0538J371t+rss=
