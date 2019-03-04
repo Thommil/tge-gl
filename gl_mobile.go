@@ -22,7 +22,7 @@ func (p *plugin) Init(runtime tge.Runtime) error {
 	case gl.Context:
 		p.glContext = renderer.(gl.Context)
 	default:
-		return fmt.Errorf("Runtime renderer must be a golang.org/x/mobile/gl.Context")
+		return fmt.Errorf("Runtime renderer must be a github.com/thommil/tge-mobile/gl.Context")
 	}
 	return nil
 }
