@@ -22,8 +22,8 @@ type plugin struct {
 
 var _pluginInstance = &plugin{}
 
-// GetInstance returns plugin handler
-func GetInstance() tge.Plugin {
+// Load returns plugin handler
+func Load() tge.Plugin {
 	return _pluginInstance
 }
 
