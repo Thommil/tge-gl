@@ -9,20 +9,13 @@ import (
 	fmt "fmt"
 	math "math"
 	js "syscall/js"
-	"unsafe"
+	unsafe "unsafe"
 
 	tge "github.com/thommil/tge"
 )
 
 type plugin struct {
 	glContext *js.Value
-}
-
-var _pluginInstance = &plugin{}
-
-// Load returns plugin handler
-func Load() tge.Plugin {
-	return _pluginInstance
 }
 
 func (p *plugin) Init(runtime tge.Runtime) error {

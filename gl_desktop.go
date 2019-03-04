@@ -20,13 +20,6 @@ type plugin struct {
 	isInit bool
 }
 
-var _pluginInstance = &plugin{}
-
-// Load returns plugin handler
-func Load() tge.Plugin {
-	return _pluginInstance
-}
-
 func (p *plugin) Init(runtime tge.Runtime) error {
 	if !p.isInit {
 		p.isInit = true

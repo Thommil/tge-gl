@@ -4,14 +4,19 @@ package gl
 import (
 	binary "encoding/binary"
 	unsafe "unsafe"
+
+	tge "github.com/thommil/tge"
 )
 
 // Name name of the plugin
 const Name = "gl"
 
+var _pluginInstance = &plugin{}
 var nativeEndian binary.ByteOrder
 
 func init() {
+	tge.Register(_pluginInstance)
+
 	buf := [2]byte{}
 	*(*uint16)(unsafe.Pointer(&buf[0])) = uint16(0xABCD)
 	switch buf {

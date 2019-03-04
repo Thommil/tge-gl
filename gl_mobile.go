@@ -16,13 +16,6 @@ type plugin struct {
 	glContext gl.Context
 }
 
-var _pluginInstance = &plugin{}
-
-// Load returns plugin handler
-func Load() tge.Plugin {
-	return _pluginInstance
-}
-
 func (p *plugin) Init(runtime tge.Runtime) error {
 	renderer := runtime.GetRenderer()
 	switch renderer.(type) {
