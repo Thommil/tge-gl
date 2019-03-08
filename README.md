@@ -7,10 +7,24 @@
 
 OpenGL support for TGE runtime - [TGE](https://github.com/thommil/tge)
 
-Targets:
+## Targets
  * OpenGL 3.3 core on Desktop
  * WebGL2 on Browsers
  * OpenGLES 3 on Mobile
+
+## Dependencies
+ * [TGE core](https://github.com/thommil/tge)
+
+## Limitations
+### Not implemented
+ * glUniformMatrix2x3fv
+ * glUniformMatrix3x2fv
+ * glUniformMatrix2x4fv
+ * glUniformMatrix4x2fv
+ * glUniformMatrix3x4fv
+ * glUniformMatrix4x3fv
+ * glBlitFramebuffer
+ * PolygonMode on Mobile/Browser 
 
 ## Implementation
 See example at [OpenGL example](https://github.com/Thommil/tge-examples/tree/master/plugins/tge-gl)
