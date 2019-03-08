@@ -53,10 +53,10 @@ func GetGLSLVersion() string {
 
 // FlushCache free memory cache, should be called between scenes
 func FlushCache() {
-	for k, _ := range float32TypedArrayCacheMap {
+	for k := range float32TypedArrayCacheMap {
 		delete(float32TypedArrayCacheMap, k)
 	}
-	for k, _ := range int32TypedArrayCacheMap {
+	for k := range int32TypedArrayCacheMap {
 		delete(int32TypedArrayCacheMap, k)
 	}
 }
@@ -696,7 +696,7 @@ func getInt32ArrayBuffer(size int) []int32 {
 
 var int32TypedArrayCacheMap = make(map[uintptr]*js.TypedArray)
 
-// No affectation if done due to magic coincidence bewteen this cache and syscall.js one \o/
+// No affectation if done due to magic coincidence between this cache and syscall.js one \o/
 func getInt32TypedArrayFromCache(src []int32) *js.TypedArray {
 	key := uintptr(unsafe.Pointer(&src[0])) + uintptr(len(src))
 	if b, found := int32TypedArrayCacheMap[key]; found {

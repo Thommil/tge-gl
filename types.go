@@ -38,11 +38,29 @@ type Uniform int32
 // A VertexArray is a GL object that holds vertices in an internal format.
 type VertexArray uint32
 
-func (v Program) Valid() bool      { return v > 0 }
-func (v Shader) Valid() bool       { return v > 0 }
-func (v Buffer) Valid() bool       { return v > 0 }
-func (v Framebuffer) Valid() bool  { return v > 0 }
+// Valid indicates if attrib is valid in OpenGL context
+func (v Attrib) Valid() bool { return v >= 0 }
+
+// Valid indicates if program is valid in OpenGL context
+func (v Program) Valid() bool { return v > 0 }
+
+// Valid indicates if shader is valid in OpenGL context
+func (v Shader) Valid() bool { return v > 0 }
+
+// Valid indicates if buffer is valid in OpenGL context
+func (v Buffer) Valid() bool { return v > 0 }
+
+// Valid indicates if framebuffer is valid in OpenGL context
+func (v Framebuffer) Valid() bool { return v > 0 }
+
+// Valid indicates if renderbuffer is valid in OpenGL context
 func (v Renderbuffer) Valid() bool { return v > 0 }
-func (v Texture) Valid() bool      { return v > 0 }
-func (v Uniform) Valid() bool      { return v >= 0 }
-func (v VertexArray) Valid() bool  { return v > 0 }
+
+// Valid indicates if texture is valid in OpenGL context
+func (v Texture) Valid() bool { return v > 0 }
+
+// Valid indicates if uniform is valid in OpenGL context
+func (v Uniform) Valid() bool { return v >= 0 }
+
+// Valid indicates if VAO is valid in OpenGL context
+func (v VertexArray) Valid() bool { return v > 0 }

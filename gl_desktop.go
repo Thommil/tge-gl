@@ -132,7 +132,7 @@ func BlendFunc(sfactor, dfactor Enum) {
 	gl.BlendFunc(uint32(sfactor), uint32(dfactor))
 }
 
-// BlendFunc sets the pixel RGB and alpha blending factors separately.
+// BlendFuncSeparate sets the pixel RGB and alpha blending factors separately.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBlendFuncSeparate.xhtml
 func BlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha Enum) {
@@ -651,7 +651,7 @@ func GetRenderbufferParameteri(target, pname Enum) int {
 	return int(result)
 }
 
-// GetRenderbufferParameteri returns a parameter value for a shader.
+// GetShaderi returns a parameter value for a shader.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetShaderiv.xhtml
 func GetShaderi(s Shader, pname Enum) int {
@@ -924,7 +924,7 @@ func StencilFunc(fn Enum, ref int, mask uint32) {
 	gl.StencilFunc(uint32(fn), int32(ref), mask)
 }
 
-// StencilFunc sets the front or back stencil test reference value.
+// StencilFuncSeparate sets the front or back stencil test reference value.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glStencilFuncSeparate.xhtml
 func StencilFuncSeparate(face, fn Enum, ref int, mask uint32) {
@@ -1246,7 +1246,7 @@ func Uniform4i(dst Uniform, v0, v1, v2, v3 int32) {
 	}
 }
 
-// Uniform4i writes an ivec4 uniform array of len(src)/4 elements.
+// Uniform4iv writes an ivec4 uniform array of len(src)/4 elements.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform4iv(dst Uniform, src []int32) {

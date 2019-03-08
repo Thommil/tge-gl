@@ -1,4 +1,6 @@
 // Copyright (c) 2019 Thomas MILLET. All rights reserved.
+
+// Package gl defines tge-gl API
 package gl
 
 import (
@@ -197,7 +199,7 @@ func Float64ToBytes(values []float64) []byte {
 	return b
 }
 
-// PointerToBytes allows to revover Byte[] from a pointer, usefull for ports (ex: G3N)
+// PointerToBytes allows to revover Byte[] from a pointer, useful for ports (ex: G3N)
 func PointerToBytes(data interface{}, size int) []byte {
 	switch data.(type) {
 	case *uint8:

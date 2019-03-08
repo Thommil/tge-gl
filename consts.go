@@ -31,6 +31,7 @@ format, which is covered by the license:
 
 */
 
+// GL Common Constants
 const (
 	POINTS                                       = 0x0000
 	LINES                                        = 0x0001
@@ -309,12 +310,14 @@ const (
 	INVALID_FRAMEBUFFER_OPERATION                = 0x0506
 )
 
+// Buffer types
 const (
 	DEPTH_BUFFER_BIT   = 0x00000100
 	STENCIL_BUFFER_BIT = 0x00000400
 	COLOR_BUFFER_BIT   = 0x00004000
 )
 
+// Types
 const (
 	FLOAT_VEC2   = 0x8B50
 	FLOAT_VEC3   = 0x8B51
@@ -333,11 +336,13 @@ const (
 	SAMPLER_CUBE = 0x8B60
 )
 
+// Shaders types
 const (
 	FRAGMENT_SHADER = 0x8B30
 	VERTEX_SHADER   = 0x8B31
 )
 
+// Common
 const (
 	FALSE    = 0
 	TRUE     = 1
