@@ -1,4 +1,10 @@
-# TGE-GL plugin
+<h1 align="center">TGE-GL - OpenGL plugin for TGE</h1>
+
+ <p align="center">
+    <a href="https://godoc.org/github.com/thommil/tge-gl"><img src="https://godoc.org/github.com/thommil/tge-gl?status.svg" alt="Godoc"></img></a>
+    <a href="https://goreportcard.com/report/github.com/thommil/tge-gl"><img src="https://goreportcard.com/badge/github.com/thommil/tge-gl"  alt="Go Report Card"/></a>
+</p>
+
 OpenGL support for TGE runtime - [TGE](https://github.com/thommil/tge)
 
 Targets:
