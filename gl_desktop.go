@@ -541,7 +541,7 @@ func GetAttachedShaders(p Program) []Shader {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetAttribLocation.xhtml
 func GetAttribLocation(p Program, name string) Attrib {
-	return Attrib{Value: uint(gl.GetAttribLocation(p.Value, gl.Str(name+"\x00")))}
+	return Attrib{Value: gl.GetAttribLocation(p.Value, gl.Str(name+"\x00"))}
 }
 
 // GetBooleanv returns the boolean values of parameter pname.

@@ -13,7 +13,7 @@ type Enum uint32
 
 // Attrib identifies the location of a specific attribute variable.
 type Attrib struct {
-	Value uint
+	Value int32
 }
 
 // Program identifies a compiled shader program.

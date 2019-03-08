@@ -66,7 +66,7 @@ func AttachShader(p Program, s Shader) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBindAttribLocation.xhtml
 func BindAttribLocation(p Program, a Attrib, name string) {
-	_pluginInstance.glContext.BindAttribLocation(gl.Program{Init: true, Value: p.Value}, gl.Attrib{a.Value}, name+"\x00")
+	_pluginInstance.glContext.BindAttribLocation(gl.Program{Init: true, Value: p.Value}, gl.Attrib{uint(a.Value)}, name+"\x00")
 }
 
 // BindBuffer binds a buffer.
@@ -400,7 +400,7 @@ func Disable(cap Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDisableVertexAttribArray.xhtml
 func DisableVertexAttribArray(a Attrib) {
-	_pluginInstance.glContext.DisableVertexAttribArray(gl.Attrib{a.Value})
+	_pluginInstance.glContext.DisableVertexAttribArray(gl.Attrib{uint(a.Value)})
 }
 
 // DrawArrays renders geometric primitives from the bound data.
@@ -428,7 +428,7 @@ func Enable(cap Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glEnableVertexAttribArray.xhtml
 func EnableVertexAttribArray(a Attrib) {
-	_pluginInstance.glContext.EnableVertexAttribArray(gl.Attrib{a.Value})
+	_pluginInstance.glContext.EnableVertexAttribArray(gl.Attrib{uint(a.Value)})
 }
 
 // Finish blocks until the effects of all previously called GL
@@ -517,7 +517,7 @@ func GetAttachedShaders(p Program) []Shader {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetAttribLocation.xhtml
 func GetAttribLocation(p Program, name string) Attrib {
-	return Attrib{_pluginInstance.glContext.GetAttribLocation(gl.Program{Init: true, Value: p.Value}, name).Value}
+	return Attrib{int32(_pluginInstance.glContext.GetAttribLocation(gl.Program{Init: true, Value: p.Value}, name).Value)}
 }
 
 // GetBooleanv returns the boolean values of parameter pname.
@@ -686,28 +686,28 @@ func GetUniformLocation(p Program, name string) Uniform {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetVertexAttrib.xhtml
 func GetVertexAttribf(src Attrib, pname Enum) float32 {
-	return _pluginInstance.glContext.GetVertexAttribf(gl.Attrib{src.Value}, gl.Enum(pname))
+	return _pluginInstance.glContext.GetVertexAttribf(gl.Attrib{uint(src.Value)}, gl.Enum(pname))
 }
 
 // GetVertexAttribfv reads float values of a vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetVertexAttrib.xhtml
 func GetVertexAttribfv(dst []float32, src Attrib, pname Enum) {
-	_pluginInstance.glContext.GetVertexAttribfv(dst, gl.Attrib{src.Value}, gl.Enum(pname))
+	_pluginInstance.glContext.GetVertexAttribfv(dst, gl.Attrib{uint(src.Value)}, gl.Enum(pname))
 }
 
 // GetVertexAttribi reads the int value of a vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetVertexAttrib.xhtml
 func GetVertexAttribi(src Attrib, pname Enum) int32 {
-	return _pluginInstance.glContext.GetVertexAttribi(gl.Attrib{src.Value}, gl.Enum(pname))
+	return _pluginInstance.glContext.GetVertexAttribi(gl.Attrib{uint(src.Value)}, gl.Enum(pname))
 }
 
 // GetVertexAttribiv reads int values of a vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetVertexAttrib.xhtml
 func GetVertexAttribiv(dst []int32, src Attrib, pname Enum) {
-	_pluginInstance.glContext.GetVertexAttribiv(dst, gl.Attrib{src.Value}, gl.Enum(pname))
+	_pluginInstance.glContext.GetVertexAttribiv(dst, gl.Attrib{uint(src.Value)}, gl.Enum(pname))
 }
 
 // Hint sets implementation-specific modes.
@@ -1187,63 +1187,63 @@ func ValidateProgram(p Program) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib1f(dst Attrib, x float32) {
-	_pluginInstance.glContext.VertexAttrib1f(gl.Attrib{dst.Value}, x)
+	_pluginInstance.glContext.VertexAttrib1f(gl.Attrib{uint(dst.Value)}, x)
 }
 
 // VertexAttrib1fv writes a float vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib1fv(dst Attrib, src []float32) {
-	_pluginInstance.glContext.VertexAttrib1fv(gl.Attrib{dst.Value}, src)
+	_pluginInstance.glContext.VertexAttrib1fv(gl.Attrib{uint(dst.Value)}, src)
 }
 
 // VertexAttrib2f writes a vec2 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib2f(dst Attrib, x, y float32) {
-	_pluginInstance.glContext.VertexAttrib2f(gl.Attrib{dst.Value}, x, y)
+	_pluginInstance.glContext.VertexAttrib2f(gl.Attrib{uint(dst.Value)}, x, y)
 }
 
 // VertexAttrib2fv writes a vec2 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib2fv(dst Attrib, src []float32) {
-	_pluginInstance.glContext.VertexAttrib2fv(gl.Attrib{dst.Value}, src)
+	_pluginInstance.glContext.VertexAttrib2fv(gl.Attrib{uint(dst.Value)}, src)
 }
 
 // VertexAttrib3f writes a vec3 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib3f(dst Attrib, x, y, z float32) {
-	_pluginInstance.glContext.VertexAttrib3f(gl.Attrib{dst.Value}, x, y, z)
+	_pluginInstance.glContext.VertexAttrib3f(gl.Attrib{uint(dst.Value)}, x, y, z)
 }
 
 // VertexAttrib3fv writes a vec3 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib3fv(dst Attrib, src []float32) {
-	_pluginInstance.glContext.VertexAttrib3fv(gl.Attrib{dst.Value}, src)
+	_pluginInstance.glContext.VertexAttrib3fv(gl.Attrib{uint(dst.Value)}, src)
 }
 
 // VertexAttrib4f writes a vec4 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib4f(dst Attrib, x, y, z, w float32) {
-	_pluginInstance.glContext.VertexAttrib4f(gl.Attrib{dst.Value}, x, y, z, w)
+	_pluginInstance.glContext.VertexAttrib4f(gl.Attrib{uint(dst.Value)}, x, y, z, w)
 }
 
 // VertexAttrib4fv writes a vec4 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib4fv(dst Attrib, src []float32) {
-	_pluginInstance.glContext.VertexAttrib4fv(gl.Attrib{dst.Value}, src)
+	_pluginInstance.glContext.VertexAttrib4fv(gl.Attrib{uint(dst.Value)}, src)
 }
 
 // VertexAttribPointer uses a bound buffer to define vertex attribute data.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttribPointer.xhtml
 func VertexAttribPointer(dst Attrib, size int, ty Enum, normalized bool, stride, offset int) {
-	_pluginInstance.glContext.VertexAttribPointer(gl.Attrib{dst.Value}, size, gl.Enum(ty), normalized, stride, offset)
+	_pluginInstance.glContext.VertexAttribPointer(gl.Attrib{uint(dst.Value)}, size, gl.Enum(ty), normalized, stride, offset)
 }
 
 // Viewport sets the viewport, an affine transformation that

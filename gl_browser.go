@@ -364,7 +364,7 @@ func GetAttachedShaders(p Program) []Shader {
 }
 
 func GetAttribLocation(p Program, name string) Attrib {
-	return Attrib{Value: uint(_pluginInstance.glContext.Call("getAttribLocation", programMap[p.Value], name).Int())}
+	return Attrib{Value: int32(_pluginInstance.glContext.Call("getAttribLocation", programMap[p.Value], name).Int())}
 }
 
 func GetBooleanv(dst []bool, pname Enum) {
