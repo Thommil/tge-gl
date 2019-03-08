@@ -58,7 +58,7 @@ func ActiveTexture(texture Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glAttachShader.xhtml
 func AttachShader(p Program, s Shader) {
-	_pluginInstance.glContext.AttachShader(gl.Program{Init: true, Value: p.Value}, gl.Shader{s.Value})
+	_pluginInstance.glContext.AttachShader(gl.Program{Init: true, Value: uint32(p)}, gl.Shader{uint32(s)})
 }
 
 // BindAttribLocation binds a vertex attribute index with a named
@@ -66,42 +66,42 @@ func AttachShader(p Program, s Shader) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBindAttribLocation.xhtml
 func BindAttribLocation(p Program, a Attrib, name string) {
-	_pluginInstance.glContext.BindAttribLocation(gl.Program{Init: true, Value: p.Value}, gl.Attrib{uint(a.Value)}, name+"\x00")
+	_pluginInstance.glContext.BindAttribLocation(gl.Program{Init: true, Value: uint32(p)}, gl.Attrib{uint(a)}, name+"\x00")
 }
 
 // BindBuffer binds a buffer.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBindBuffer.xhtml
 func BindBuffer(target Enum, b Buffer) {
-	_pluginInstance.glContext.BindBuffer(gl.Enum(target), gl.Buffer{b.Value})
+	_pluginInstance.glContext.BindBuffer(gl.Enum(target), gl.Buffer{uint32(b)})
 }
 
 // BindFramebuffer binds a framebuffer.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBindFramebuffer.xhtml
 func BindFramebuffer(target Enum, fb Framebuffer) {
-	_pluginInstance.glContext.BindFramebuffer(gl.Enum(target), gl.Framebuffer{fb.Value})
+	_pluginInstance.glContext.BindFramebuffer(gl.Enum(target), gl.Framebuffer{uint32(fb)})
 }
 
 // BindRenderbuffer binds a render buffer.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBindRenderbuffer.xhtml
 func BindRenderbuffer(target Enum, rb Renderbuffer) {
-	_pluginInstance.glContext.BindRenderbuffer(gl.Enum(target), gl.Renderbuffer{rb.Value})
+	_pluginInstance.glContext.BindRenderbuffer(gl.Enum(target), gl.Renderbuffer{uint32(rb)})
 }
 
 // BindTexture binds a texture.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBindTexture.xhtml
 func BindTexture(target Enum, t Texture) {
-	_pluginInstance.glContext.BindTexture(gl.Enum(target), gl.Texture{t.Value})
+	_pluginInstance.glContext.BindTexture(gl.Enum(target), gl.Texture{uint32(t)})
 }
 
 // BindVertexArray binds a vertex array.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glBindVertexArray.xhtml
 func BindVertexArray(rb VertexArray) {
-	_pluginInstance.glContext.BindVertexArray(gl.VertexArray{rb.Value})
+	_pluginInstance.glContext.BindVertexArray(gl.VertexArray{uint32(rb)})
 }
 
 // BlendColor sets the blend color.
@@ -211,7 +211,7 @@ func ColorMask(red, green, blue, alpha bool) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glCompileShader.xhtml
 func CompileShader(s Shader) {
-	_pluginInstance.glContext.CompileShader(gl.Shader{s.Value})
+	_pluginInstance.glContext.CompileShader(gl.Shader{uint32(s)})
 }
 
 // CompressedTexImage2D writes a compressed 2D texture.
@@ -247,49 +247,49 @@ func CopyTexSubImage2D(target Enum, level, xoffset, yoffset, x, y, width, height
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGenBuffers.xhtml
 func CreateBuffer() Buffer {
-	return Buffer{_pluginInstance.glContext.CreateBuffer().Value}
+	return Buffer(_pluginInstance.glContext.CreateBuffer().Value)
 }
 
 // CreateFramebuffer creates a framebuffer object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGenFramebuffers.xhtml
 func CreateFramebuffer() Framebuffer {
-	return Framebuffer{_pluginInstance.glContext.CreateFramebuffer().Value}
+	return Framebuffer(_pluginInstance.glContext.CreateFramebuffer().Value)
 }
 
 // CreateProgram creates a new empty program object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glCreateProgram.xhtml
 func CreateProgram() Program {
-	return Program{Value: _pluginInstance.glContext.CreateProgram().Value}
+	return Program(_pluginInstance.glContext.CreateProgram().Value)
 }
 
 // CreateRenderbuffer create a renderbuffer object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGenRenderbuffers.xhtml
 func CreateRenderbuffer() Renderbuffer {
-	return Renderbuffer{_pluginInstance.glContext.CreateRenderbuffer().Value}
+	return Renderbuffer(_pluginInstance.glContext.CreateRenderbuffer().Value)
 }
 
 // CreateShader creates a new empty shader object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glCreateShader.xhtml
 func CreateShader(ty Enum) Shader {
-	return Shader{_pluginInstance.glContext.CreateShader(gl.Enum(ty)).Value}
+	return Shader(_pluginInstance.glContext.CreateShader(gl.Enum(ty)).Value)
 }
 
 // CreateTexture creates a texture object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGenTextures.xhtml
 func CreateTexture() Texture {
-	return Texture{_pluginInstance.glContext.CreateTexture().Value}
+	return Texture(_pluginInstance.glContext.CreateTexture().Value)
 }
 
 // CreateTVertexArray creates a vertex array.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGenVertexArrays.xhtml
 func CreateVertexArray() VertexArray {
-	return VertexArray{_pluginInstance.glContext.CreateVertexArray().Value}
+	return VertexArray(_pluginInstance.glContext.CreateVertexArray().Value)
 }
 
 // CullFace specifies which polygons are candidates for culling.
@@ -305,49 +305,49 @@ func CullFace(mode Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteBuffers.xhtml
 func DeleteBuffer(v Buffer) {
-	_pluginInstance.glContext.DeleteBuffer(gl.Buffer{v.Value})
+	_pluginInstance.glContext.DeleteBuffer(gl.Buffer{uint32(v)})
 }
 
 // DeleteFramebuffer deletes the given framebuffer object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteFramebuffers.xhtml
 func DeleteFramebuffer(v Framebuffer) {
-	_pluginInstance.glContext.DeleteFramebuffer(gl.Framebuffer{v.Value})
+	_pluginInstance.glContext.DeleteFramebuffer(gl.Framebuffer{uint32(v)})
 }
 
 // DeleteProgram deletes the given program object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteProgram.xhtml
 func DeleteProgram(p Program) {
-	_pluginInstance.glContext.DeleteProgram(gl.Program{Init: true, Value: p.Value})
+	_pluginInstance.glContext.DeleteProgram(gl.Program{Init: true, Value: uint32(p)})
 }
 
 // DeleteRenderbuffer deletes the given render buffer object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteRenderbuffers.xhtml
 func DeleteRenderbuffer(v Renderbuffer) {
-	_pluginInstance.glContext.DeleteRenderbuffer(gl.Renderbuffer{v.Value})
+	_pluginInstance.glContext.DeleteRenderbuffer(gl.Renderbuffer{uint32(v)})
 }
 
 // DeleteShader deletes shader s.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteShader.xhtml
 func DeleteShader(s Shader) {
-	_pluginInstance.glContext.DeleteShader(gl.Shader{s.Value})
+	_pluginInstance.glContext.DeleteShader(gl.Shader{uint32(s)})
 }
 
 // DeleteTexture deletes the given texture object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteTextures.xhtml
 func DeleteTexture(v Texture) {
-	_pluginInstance.glContext.DeleteTexture(gl.Texture{v.Value})
+	_pluginInstance.glContext.DeleteTexture(gl.Texture{uint32(v)})
 }
 
 // DeleteVertexArray deletes the given render buffer object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteVertexArrays.xhtml
 func DeleteVertexArray(v VertexArray) {
-	_pluginInstance.glContext.DeleteVertexArray(gl.VertexArray{v.Value})
+	_pluginInstance.glContext.DeleteVertexArray(gl.VertexArray{uint32(v)})
 }
 
 // DepthFunc sets the function used for depth buffer comparisons.
@@ -386,7 +386,7 @@ func DepthRangef(n, f float32) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDetachShader.xhtml
 func DetachShader(p Program, s Shader) {
-	_pluginInstance.glContext.DetachShader(gl.Program{Init: true, Value: p.Value}, gl.Shader{s.Value})
+	_pluginInstance.glContext.DetachShader(gl.Program{Init: true, Value: uint32(p)}, gl.Shader{uint32(s)})
 }
 
 // Disable disables various GL capabilities.
@@ -400,7 +400,7 @@ func Disable(cap Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glDisableVertexAttribArray.xhtml
 func DisableVertexAttribArray(a Attrib) {
-	_pluginInstance.glContext.DisableVertexAttribArray(gl.Attrib{uint(a.Value)})
+	_pluginInstance.glContext.DisableVertexAttribArray(gl.Attrib{uint(a)})
 }
 
 // DrawArrays renders geometric primitives from the bound data.
@@ -428,7 +428,7 @@ func Enable(cap Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glEnableVertexAttribArray.xhtml
 func EnableVertexAttribArray(a Attrib) {
-	_pluginInstance.glContext.EnableVertexAttribArray(gl.Attrib{uint(a.Value)})
+	_pluginInstance.glContext.EnableVertexAttribArray(gl.Attrib{uint(a)})
 }
 
 // Finish blocks until the effects of all previously called GL
@@ -453,14 +453,14 @@ func Flush() {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glFramebufferRenderbuffer.xhtml
 func FramebufferRenderbuffer(target, attachment, rbTarget Enum, rb Renderbuffer) {
-	_pluginInstance.glContext.FramebufferRenderbuffer(gl.Enum(target), gl.Enum(attachment), gl.Enum(rbTarget), gl.Renderbuffer{rb.Value})
+	_pluginInstance.glContext.FramebufferRenderbuffer(gl.Enum(target), gl.Enum(attachment), gl.Enum(rbTarget), gl.Renderbuffer{uint32(rb)})
 }
 
 // FramebufferTexture2D attaches the t to the current frame buffer.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glFramebufferTexture2D.xhtml
 func FramebufferTexture2D(target, attachment, texTarget Enum, t Texture, level int) {
-	_pluginInstance.glContext.FramebufferTexture2D(gl.Enum(target), gl.Enum(attachment), gl.Enum(texTarget), gl.Texture{t.Value}, level)
+	_pluginInstance.glContext.FramebufferTexture2D(gl.Enum(target), gl.Enum(attachment), gl.Enum(texTarget), gl.Texture{uint32(t)}, level)
 }
 
 // FrontFace defines which polygons are front-facing.
@@ -486,7 +486,7 @@ func GenerateMipmap(target Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetActiveAttrib.xhtml
 func GetActiveAttrib(p Program, index uint32) (name string, size int, ty Enum) {
-	n, s, t := _pluginInstance.glContext.GetActiveAttrib(gl.Program{Init: true, Value: p.Value}, index)
+	n, s, t := _pluginInstance.glContext.GetActiveAttrib(gl.Program{Init: true, Value: uint32(p)}, index)
 	return n, s, Enum(t)
 }
 
@@ -497,7 +497,7 @@ func GetActiveAttrib(p Program, index uint32) (name string, size int, ty Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetActiveUniform.xhtml
 func GetActiveUniform(p Program, index uint32) (name string, size int, ty Enum) {
-	n, s, t := _pluginInstance.glContext.GetActiveUniform(gl.Program{Init: true, Value: p.Value}, index)
+	n, s, t := _pluginInstance.glContext.GetActiveUniform(gl.Program{Init: true, Value: uint32(p)}, index)
 	return n, s, Enum(t)
 }
 
@@ -505,10 +505,10 @@ func GetActiveUniform(p Program, index uint32) (name string, size int, ty Enum) 
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetAttachedShaders.xhtml
 func GetAttachedShaders(p Program) []Shader {
-	shaders := _pluginInstance.glContext.GetAttachedShaders(gl.Program{Init: true, Value: p.Value})
+	shaders := _pluginInstance.glContext.GetAttachedShaders(gl.Program{Init: true, Value: uint32(p)})
 	s := make([]Shader, len(shaders))
 	for i, el := range shaders {
-		s[i] = Shader{el.Value}
+		s[i] = Shader(el.Value)
 	}
 	return s
 }
@@ -517,7 +517,7 @@ func GetAttachedShaders(p Program) []Shader {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetAttribLocation.xhtml
 func GetAttribLocation(p Program, name string) Attrib {
-	return Attrib{int32(_pluginInstance.glContext.GetAttribLocation(gl.Program{Init: true, Value: p.Value}, name).Value)}
+	return Attrib(int32(_pluginInstance.glContext.GetAttribLocation(gl.Program{Init: true, Value: uint32(p)}, name).Value))
 }
 
 // GetBooleanv returns the boolean values of parameter pname.
@@ -572,7 +572,7 @@ func GetError() Enum {
 func GetBoundFramebuffer() Framebuffer {
 	b := make([]int32, 1)
 	_pluginInstance.glContext.GetIntegerv(b, gl.FRAMEBUFFER_BINDING)
-	return Framebuffer{Value: uint32(b[0])}
+	return Framebuffer(uint32(b[0]))
 }
 
 // GetFramebufferAttachmentParameteri returns attachment parameters
@@ -587,14 +587,14 @@ func GetFramebufferAttachmentParameteri(target, attachment, pname Enum) int {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetProgramiv.xhtml
 func GetProgrami(p Program, pname Enum) int {
-	return _pluginInstance.glContext.GetProgrami(gl.Program{Init: true, Value: p.Value}, gl.Enum(pname))
+	return _pluginInstance.glContext.GetProgrami(gl.Program{Init: true, Value: uint32(p)}, gl.Enum(pname))
 }
 
 // GetProgramInfoLog returns the information log for a program.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetProgramInfoLog.xhtml
 func GetProgramInfoLog(p Program) string {
-	return _pluginInstance.glContext.GetProgramInfoLog(gl.Program{Init: true, Value: p.Value})
+	return _pluginInstance.glContext.GetProgramInfoLog(gl.Program{Init: true, Value: uint32(p)})
 }
 
 // GetRenderbufferParameteri returns a parameter value for a render buffer.
@@ -608,14 +608,14 @@ func GetRenderbufferParameteri(target, pname Enum) int {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetShaderiv.xhtml
 func GetShaderi(s Shader, pname Enum) int {
-	return _pluginInstance.glContext.GetShaderi(gl.Shader{s.Value}, gl.Enum(pname))
+	return _pluginInstance.glContext.GetShaderi(gl.Shader{uint32(s)}, gl.Enum(pname))
 }
 
 // GetShaderInfoLog returns the information log for a shader.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetShaderInfoLog.xhtml
 func GetShaderInfoLog(s Shader) string {
-	return _pluginInstance.glContext.GetShaderInfoLog(gl.Shader{s.Value})
+	return _pluginInstance.glContext.GetShaderInfoLog(gl.Shader{uint32(s)})
 }
 
 // GetShaderPrecisionFormat returns range and precision limits for
@@ -630,7 +630,7 @@ func GetShaderPrecisionFormat(shadertype, precisiontype Enum) (rangeLow, rangeHi
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetShaderSource.xhtml
 func GetShaderSource(s Shader) string {
-	return _pluginInstance.glContext.GetShaderSource(gl.Shader{s.Value})
+	return _pluginInstance.glContext.GetShaderSource(gl.Shader{uint32(s)})
 }
 
 // GetString reports current GL state.
@@ -665,49 +665,49 @@ func GetTexParameteriv(dst []int32, target, pname Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetUniform.xhtml
 func GetUniformfv(dst []float32, src Uniform, p Program) {
-	_pluginInstance.glContext.GetUniformfv(dst, gl.Uniform{src.Value}, gl.Program{Init: true, Value: p.Value})
+	_pluginInstance.glContext.GetUniformfv(dst, gl.Uniform{int32(src)}, gl.Program{Init: true, Value: uint32(p)})
 }
 
 // GetUniformiv returns the float values of a uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetUniform.xhtml
 func GetUniformiv(dst []int32, src Uniform, p Program) {
-	_pluginInstance.glContext.GetUniformiv(dst, gl.Uniform{src.Value}, gl.Program{Init: true, Value: p.Value})
+	_pluginInstance.glContext.GetUniformiv(dst, gl.Uniform{int32(src)}, gl.Program{Init: true, Value: uint32(p)})
 }
 
 // GetUniformLocation returns the location of a uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetUniformLocation.xhtml
 func GetUniformLocation(p Program, name string) Uniform {
-	return Uniform{_pluginInstance.glContext.GetUniformLocation(gl.Program{Init: true, Value: p.Value}, name).Value}
+	return Uniform(_pluginInstance.glContext.GetUniformLocation(gl.Program{Init: true, Value: uint32(p)}, name).Value)
 }
 
 // GetVertexAttribf reads the float value of a vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetVertexAttrib.xhtml
 func GetVertexAttribf(src Attrib, pname Enum) float32 {
-	return _pluginInstance.glContext.GetVertexAttribf(gl.Attrib{uint(src.Value)}, gl.Enum(pname))
+	return _pluginInstance.glContext.GetVertexAttribf(gl.Attrib{uint(src)}, gl.Enum(pname))
 }
 
 // GetVertexAttribfv reads float values of a vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetVertexAttrib.xhtml
 func GetVertexAttribfv(dst []float32, src Attrib, pname Enum) {
-	_pluginInstance.glContext.GetVertexAttribfv(dst, gl.Attrib{uint(src.Value)}, gl.Enum(pname))
+	_pluginInstance.glContext.GetVertexAttribfv(dst, gl.Attrib{uint(src)}, gl.Enum(pname))
 }
 
 // GetVertexAttribi reads the int value of a vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetVertexAttrib.xhtml
 func GetVertexAttribi(src Attrib, pname Enum) int32 {
-	return _pluginInstance.glContext.GetVertexAttribi(gl.Attrib{uint(src.Value)}, gl.Enum(pname))
+	return _pluginInstance.glContext.GetVertexAttribi(gl.Attrib{uint(src)}, gl.Enum(pname))
 }
 
 // GetVertexAttribiv reads int values of a vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glGetVertexAttrib.xhtml
 func GetVertexAttribiv(dst []int32, src Attrib, pname Enum) {
-	_pluginInstance.glContext.GetVertexAttribiv(dst, gl.Attrib{uint(src.Value)}, gl.Enum(pname))
+	_pluginInstance.glContext.GetVertexAttribiv(dst, gl.Attrib{uint(src)}, gl.Enum(pname))
 }
 
 // Hint sets implementation-specific modes.
@@ -721,7 +721,7 @@ func Hint(target, mode Enum) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glIsBuffer.xhtml
 func IsBuffer(b Buffer) bool {
-	return _pluginInstance.glContext.IsBuffer(gl.Buffer{b.Value})
+	return _pluginInstance.glContext.IsBuffer(gl.Buffer{uint32(b)})
 }
 
 // IsEnabled reports if cap is an enabled capability.
@@ -735,35 +735,35 @@ func IsEnabled(cap Enum) bool {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glIsFramebuffer.xhtml
 func IsFramebuffer(fb Framebuffer) bool {
-	return _pluginInstance.glContext.IsFramebuffer(gl.Framebuffer{fb.Value})
+	return _pluginInstance.glContext.IsFramebuffer(gl.Framebuffer{uint32(fb)})
 }
 
 // IsProgram reports if p is a valid program object.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glIsProgram.xhtml
 func IsProgram(p Program) bool {
-	return _pluginInstance.glContext.IsProgram(gl.Program{Init: true, Value: p.Value})
+	return _pluginInstance.glContext.IsProgram(gl.Program{Init: true, Value: uint32(p)})
 }
 
 // IsRenderbuffer reports if rb is a valid render buffer.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glIsRenderbuffer.xhtml
 func IsRenderbuffer(rb Renderbuffer) bool {
-	return _pluginInstance.glContext.IsRenderbuffer(gl.Renderbuffer{rb.Value})
+	return _pluginInstance.glContext.IsRenderbuffer(gl.Renderbuffer{uint32(rb)})
 }
 
 // IsShader reports if s is valid shader.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glIsShader.xhtml
 func IsShader(s Shader) bool {
-	return _pluginInstance.glContext.IsShader(gl.Shader{s.Value})
+	return _pluginInstance.glContext.IsShader(gl.Shader{uint32(s)})
 }
 
 // IsTexture reports if t is a valid texture.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glIsTexture.xhtml
 func IsTexture(t Texture) bool {
-	return _pluginInstance.glContext.IsTexture(gl.Texture{t.Value})
+	return _pluginInstance.glContext.IsTexture(gl.Texture{uint32(t)})
 }
 
 // LineWidth specifies the width of lines.
@@ -777,7 +777,7 @@ func LineWidth(width float32) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glLinkProgram.xhtml
 func LinkProgram(p Program) {
-	_pluginInstance.glContext.LinkProgram(gl.Program{Init: true, Value: p.Value})
+	_pluginInstance.glContext.LinkProgram(gl.Program{Init: true, Value: uint32(p)})
 }
 
 // PixelStorei sets pixel storage parameters.
@@ -841,7 +841,7 @@ func Scissor(x, y, width, height int32) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glShaderSource.xhtml
 func ShaderSource(s Shader, src string) {
-	_pluginInstance.glContext.ShaderSource(gl.Shader{s.Value}, src)
+	_pluginInstance.glContext.ShaderSource(gl.Shader{uint32(s)}, src)
 }
 
 // StencilFunc sets the front and back stencil test reference value.
@@ -932,14 +932,14 @@ func TexParameteriv(target, pname Enum, params []int32) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform1f(dst Uniform, v float32) {
-	_pluginInstance.glContext.Uniform1f(gl.Uniform{dst.Value}, v)
+	_pluginInstance.glContext.Uniform1f(gl.Uniform{int32(dst)}, v)
 }
 
 // Uniform1fv writes a [len(src)]float uniform array.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform1fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Uniform1fv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.Uniform1fv(gl.Uniform{int32(dst)}, src)
 }
 
 func Uniform1fvP(dst Uniform, count int32, value *float32) {
@@ -958,7 +958,7 @@ func Uniform1fvUP(dst Uniform, count int32, value unsafe.Pointer) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform1i(dst Uniform, v int) {
-	_pluginInstance.glContext.Uniform1i(gl.Uniform{dst.Value}, v)
+	_pluginInstance.glContext.Uniform1i(gl.Uniform{int32(dst)}, v)
 }
 
 // Uniform1iv writes a int uniform array of len(src) elements.
@@ -969,147 +969,147 @@ func Uniform1i(dst Uniform, v int) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform1iv(dst Uniform, src []int32) {
-	_pluginInstance.glContext.Uniform1iv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.Uniform1iv(gl.Uniform{int32(dst)}, src)
 }
 
 func Uniform1ivP(dst Uniform, count int32, value *int32) {
-	_pluginInstance.glContext.Uniform1ivP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform1ivP(gl.Uniform{int32(dst)}, count, value)
 }
 
 func Uniform1ivUP(dst Uniform, count int32, value unsafe.Pointer) {
-	_pluginInstance.glContext.Uniform1ivUP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform1ivUP(gl.Uniform{int32(dst)}, count, value)
 }
 
 // Uniform2f writes a vec2 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform2f(dst Uniform, v0, v1 float32) {
-	_pluginInstance.glContext.Uniform2f(gl.Uniform{dst.Value}, v0, v1)
+	_pluginInstance.glContext.Uniform2f(gl.Uniform{int32(dst)}, v0, v1)
 }
 
 // Uniform2fv writes a vec2 uniform array of len(src)/2 elements.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform2fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Uniform2fv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.Uniform2fv(gl.Uniform{int32(dst)}, src)
 }
 
 func Uniform2fvP(dst Uniform, count int32, value *float32) {
-	_pluginInstance.glContext.Uniform2fvP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform2fvP(gl.Uniform{int32(dst)}, count, value)
 }
 
 func Uniform2fvUP(dst Uniform, count int32, value unsafe.Pointer) {
-	_pluginInstance.glContext.Uniform2fvUP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform2fvUP(gl.Uniform{int32(dst)}, count, value)
 }
 
 // Uniform2i writes an ivec2 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform2i(dst Uniform, v0, v1 int) {
-	_pluginInstance.glContext.Uniform2i(gl.Uniform{dst.Value}, v0, v1)
+	_pluginInstance.glContext.Uniform2i(gl.Uniform{int32(dst)}, v0, v1)
 }
 
 // Uniform2iv writes an ivec2 uniform array of len(src)/2 elements.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform2iv(dst Uniform, src []int32) {
-	_pluginInstance.glContext.Uniform2iv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.Uniform2iv(gl.Uniform{int32(dst)}, src)
 }
 
 func Uniform2ivP(dst Uniform, count int32, value *int32) {
-	_pluginInstance.glContext.Uniform2ivP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform2ivP(gl.Uniform{int32(dst)}, count, value)
 }
 
 func Uniform2ivUP(dst Uniform, count int32, value unsafe.Pointer) {
-	_pluginInstance.glContext.Uniform2ivUP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform2ivUP(gl.Uniform{int32(dst)}, count, value)
 }
 
 // Uniform3f writes a vec3 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform3f(dst Uniform, v0, v1, v2 float32) {
-	_pluginInstance.glContext.Uniform3f(gl.Uniform{dst.Value}, v0, v1, v2)
+	_pluginInstance.glContext.Uniform3f(gl.Uniform{int32(dst)}, v0, v1, v2)
 }
 
 // Uniform3fv writes a vec3 uniform array of len(src)/3 elements.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform3fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Uniform3fv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.Uniform3fv(gl.Uniform{int32(dst)}, src)
 }
 
 func Uniform3fvP(dst Uniform, count int32, value *float32) {
-	_pluginInstance.glContext.Uniform3fvP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform3fvP(gl.Uniform{int32(dst)}, count, value)
 }
 
 func Uniform3fvUP(dst Uniform, count int32, value unsafe.Pointer) {
-	_pluginInstance.glContext.Uniform3fvUP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform3fvUP(gl.Uniform{int32(dst)}, count, value)
 }
 
 // Uniform3i writes an ivec3 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform3i(dst Uniform, v0, v1, v2 int32) {
-	_pluginInstance.glContext.Uniform3i(gl.Uniform{dst.Value}, v0, v1, v2)
+	_pluginInstance.glContext.Uniform3i(gl.Uniform{int32(dst)}, v0, v1, v2)
 }
 
 // Uniform3iv writes an ivec3 uniform array of len(src)/3 elements.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform3iv(dst Uniform, src []int32) {
-	_pluginInstance.glContext.Uniform3iv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.Uniform3iv(gl.Uniform{int32(dst)}, src)
 }
 
 func Uniform3ivP(dst Uniform, count int32, value *int32) {
-	_pluginInstance.glContext.Uniform3ivP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform3ivP(gl.Uniform{int32(dst)}, count, value)
 }
 
 func Uniform3ivUP(dst Uniform, count int32, value unsafe.Pointer) {
-	_pluginInstance.glContext.Uniform3ivUP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform3ivUP(gl.Uniform{int32(dst)}, count, value)
 }
 
 // Uniform4f writes a vec4 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform4f(dst Uniform, v0, v1, v2, v3 float32) {
-	_pluginInstance.glContext.Uniform4f(gl.Uniform{dst.Value}, v0, v1, v2, v3)
+	_pluginInstance.glContext.Uniform4f(gl.Uniform{int32(dst)}, v0, v1, v2, v3)
 }
 
 // Uniform4fv writes a vec4 uniform array of len(src)/4 elements.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform4fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.Uniform4fv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.Uniform4fv(gl.Uniform{int32(dst)}, src)
 }
 
 func Uniform4fvP(dst Uniform, count int32, value *float32) {
-	_pluginInstance.glContext.Uniform4fvP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform4fvP(gl.Uniform{int32(dst)}, count, value)
 }
 
 func Uniform4fvUP(dst Uniform, count int32, value unsafe.Pointer) {
-	_pluginInstance.glContext.Uniform4fvUP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform4fvUP(gl.Uniform{int32(dst)}, count, value)
 }
 
 // Uniform4i writes an ivec4 uniform variable.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform4i(dst Uniform, v0, v1, v2, v3 int32) {
-	_pluginInstance.glContext.Uniform4i(gl.Uniform{dst.Value}, v0, v1, v2, v3)
+	_pluginInstance.glContext.Uniform4i(gl.Uniform{int32(dst)}, v0, v1, v2, v3)
 }
 
 // Uniform4i writes an ivec4 uniform array of len(src)/4 elements.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func Uniform4iv(dst Uniform, src []int32) {
-	_pluginInstance.glContext.Uniform4iv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.Uniform4iv(gl.Uniform{int32(dst)}, src)
 }
 
 func Uniform4ivP(dst Uniform, count int32, value *int32) {
-	_pluginInstance.glContext.Uniform4ivP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform4ivP(gl.Uniform{int32(dst)}, count, value)
 }
 
 func Uniform4ivUP(dst Uniform, count int32, value unsafe.Pointer) {
-	_pluginInstance.glContext.Uniform4ivUP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.Uniform4ivUP(gl.Uniform{int32(dst)}, count, value)
 }
 
 // UniformMatrix2fv writes 2x2 matrices. Each matrix uses four
@@ -1119,15 +1119,15 @@ func Uniform4ivUP(dst Uniform, count int32, value unsafe.Pointer) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func UniformMatrix2fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.UniformMatrix2fv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.UniformMatrix2fv(gl.Uniform{int32(dst)}, src)
 }
 
 func UniformMatrix2fvP(dst Uniform, count int32, transpose bool, value *float32) {
-	_pluginInstance.glContext.UniformMatrix2fvP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.UniformMatrix2fvP(gl.Uniform{int32(dst)}, count, value)
 }
 
 func UniformMatrix2fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
-	_pluginInstance.glContext.UniformMatrix2fvUP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.UniformMatrix2fvUP(gl.Uniform{int32(dst)}, count, value)
 }
 
 // UniformMatrix3fv writes 3x3 matrices. Each matrix uses nine
@@ -1137,15 +1137,15 @@ func UniformMatrix2fvUP(dst Uniform, count int32, transpose bool, value unsafe.P
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func UniformMatrix3fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.UniformMatrix3fv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.UniformMatrix3fv(gl.Uniform{int32(dst)}, src)
 }
 
 func UniformMatrix3fvP(dst Uniform, count int32, transpose bool, value *float32) {
-	_pluginInstance.glContext.UniformMatrix3fvP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.UniformMatrix3fvP(gl.Uniform{int32(dst)}, count, value)
 }
 
 func UniformMatrix3fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
-	_pluginInstance.glContext.UniformMatrix3fvUP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.UniformMatrix3fvUP(gl.Uniform{int32(dst)}, count, value)
 }
 
 // UniformMatrix4fv writes 4x4 matrices. Each matrix uses 16
@@ -1155,22 +1155,22 @@ func UniformMatrix3fvUP(dst Uniform, count int32, transpose bool, value unsafe.P
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUniform.xhtml
 func UniformMatrix4fv(dst Uniform, src []float32) {
-	_pluginInstance.glContext.UniformMatrix4fv(gl.Uniform{dst.Value}, src)
+	_pluginInstance.glContext.UniformMatrix4fv(gl.Uniform{int32(dst)}, src)
 }
 
 func UniformMatrix4fvP(dst Uniform, count int32, transpose bool, value *float32) {
-	_pluginInstance.glContext.UniformMatrix4fvP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.UniformMatrix4fvP(gl.Uniform{int32(dst)}, count, value)
 }
 
 func UniformMatrix4fvUP(dst Uniform, count int32, transpose bool, value unsafe.Pointer) {
-	_pluginInstance.glContext.UniformMatrix4fvUP(gl.Uniform{dst.Value}, count, value)
+	_pluginInstance.glContext.UniformMatrix4fvUP(gl.Uniform{int32(dst)}, count, value)
 }
 
 // UseProgram sets the active program.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glUseProgram.xhtml
 func UseProgram(p Program) {
-	_pluginInstance.glContext.UseProgram(gl.Program{Init: true, Value: p.Value})
+	_pluginInstance.glContext.UseProgram(gl.Program{Init: true, Value: uint32(p)})
 }
 
 // ValidateProgram checks to see whether the executables contained in
@@ -1180,70 +1180,70 @@ func UseProgram(p Program) {
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glValidateProgram.xhtml
 func ValidateProgram(p Program) {
-	_pluginInstance.glContext.ValidateProgram(gl.Program{Init: true, Value: p.Value})
+	_pluginInstance.glContext.ValidateProgram(gl.Program{Init: true, Value: uint32(p)})
 }
 
 // VertexAttrib1f writes a float vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib1f(dst Attrib, x float32) {
-	_pluginInstance.glContext.VertexAttrib1f(gl.Attrib{uint(dst.Value)}, x)
+	_pluginInstance.glContext.VertexAttrib1f(gl.Attrib{uint(int32(dst))}, x)
 }
 
 // VertexAttrib1fv writes a float vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib1fv(dst Attrib, src []float32) {
-	_pluginInstance.glContext.VertexAttrib1fv(gl.Attrib{uint(dst.Value)}, src)
+	_pluginInstance.glContext.VertexAttrib1fv(gl.Attrib{uint(int32(dst))}, src)
 }
 
 // VertexAttrib2f writes a vec2 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib2f(dst Attrib, x, y float32) {
-	_pluginInstance.glContext.VertexAttrib2f(gl.Attrib{uint(dst.Value)}, x, y)
+	_pluginInstance.glContext.VertexAttrib2f(gl.Attrib{uint(int32(dst))}, x, y)
 }
 
 // VertexAttrib2fv writes a vec2 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib2fv(dst Attrib, src []float32) {
-	_pluginInstance.glContext.VertexAttrib2fv(gl.Attrib{uint(dst.Value)}, src)
+	_pluginInstance.glContext.VertexAttrib2fv(gl.Attrib{uint(int32(dst))}, src)
 }
 
 // VertexAttrib3f writes a vec3 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib3f(dst Attrib, x, y, z float32) {
-	_pluginInstance.glContext.VertexAttrib3f(gl.Attrib{uint(dst.Value)}, x, y, z)
+	_pluginInstance.glContext.VertexAttrib3f(gl.Attrib{uint(int32(dst))}, x, y, z)
 }
 
 // VertexAttrib3fv writes a vec3 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib3fv(dst Attrib, src []float32) {
-	_pluginInstance.glContext.VertexAttrib3fv(gl.Attrib{uint(dst.Value)}, src)
+	_pluginInstance.glContext.VertexAttrib3fv(gl.Attrib{uint(int32(dst))}, src)
 }
 
 // VertexAttrib4f writes a vec4 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib4f(dst Attrib, x, y, z, w float32) {
-	_pluginInstance.glContext.VertexAttrib4f(gl.Attrib{uint(dst.Value)}, x, y, z, w)
+	_pluginInstance.glContext.VertexAttrib4f(gl.Attrib{uint(int32(dst))}, x, y, z, w)
 }
 
 // VertexAttrib4fv writes a vec4 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib4fv(dst Attrib, src []float32) {
-	_pluginInstance.glContext.VertexAttrib4fv(gl.Attrib{uint(dst.Value)}, src)
+	_pluginInstance.glContext.VertexAttrib4fv(gl.Attrib{uint(int32(dst))}, src)
 }
 
 // VertexAttribPointer uses a bound buffer to define vertex attribute data.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttribPointer.xhtml
 func VertexAttribPointer(dst Attrib, size int, ty Enum, normalized bool, stride, offset int) {
-	_pluginInstance.glContext.VertexAttribPointer(gl.Attrib{uint(dst.Value)}, size, gl.Enum(ty), normalized, stride, offset)
+	_pluginInstance.glContext.VertexAttribPointer(gl.Attrib{uint(int32(dst))}, size, gl.Enum(ty), normalized, stride, offset)
 }
 
 // Viewport sets the viewport, an affine transformation that
