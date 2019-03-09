@@ -7,6 +7,10 @@
 
 OpenGL support for TGE runtime - [TGE](https://github.com/thommil/tge)
 
+Based on :
+ * [go-gl]([https://github.com/g3n/engine](https://github.com/go-gl/gl)) - Copyright (c) 2014 Eric Woroshow
+ * [gomobile](https://github.com/golang/mobile) - Copyright (c) 2009 The Go Authors. All rights reserved.
+
 ## Targets
  * OpenGL 3.3 core on Desktop
  * WebGL2 on Browsers
