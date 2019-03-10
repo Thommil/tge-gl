@@ -44,7 +44,8 @@ func GetGLSLVersion() string {
 
 // FlushCache free memory cache, should be called between scenes
 func FlushCache() {
-
+	byteArrayBuffer = make([]byte, 0)
+	byteArrayBufferExtendFactor = 1
 }
 
 // ActiveTexture sets the active texture unit.

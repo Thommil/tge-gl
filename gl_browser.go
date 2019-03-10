@@ -59,6 +59,55 @@ func FlushCache() {
 	for k := range int32TypedArrayCacheMap {
 		delete(int32TypedArrayCacheMap, k)
 	}
+
+	for k := range programMap {
+		delete(programMap, k)
+	}
+	programMapIndex = Program(1)
+
+	for k := range shaderMap {
+		delete(shaderMap, k)
+	}
+	shaderMapIndex = Shader(1)
+
+	for k := range bufferMap {
+		delete(bufferMap, k)
+	}
+	bufferMapIndex = Buffer(1)
+
+	for k := range framebufferMap {
+		delete(framebufferMap, k)
+	}
+	framebufferMapIndex = Framebuffer(1)
+
+	for k := range renderbufferMap {
+		delete(renderbufferMap, k)
+	}
+	renderbufferMapIndex = Renderbuffer(1)
+
+	for k := range textureMap {
+		delete(textureMap, k)
+	}
+	textureMapIndex = Texture(1)
+
+	for k := range uniformMap {
+		delete(uniformMap, k)
+	}
+	uniformMapIndex = Uniform(0)
+
+	for k := range vertexArrayMap {
+		delete(vertexArrayMap, k)
+	}
+	vertexArrayMapIndex = VertexArray(1)
+
+	int32ArrayBuffer = make([]int32, 0)
+	int32ArrayBufferExtendFactor = 1
+
+	float32ArrayBuffer = make([]float32, 0)
+	float32ArrayBufferExtendFactor = 1
+
+	byteArrayBuffer = make([]byte, 0)
+	byteArrayBufferExtendFactor = 1
 }
 
 var programMap = make(map[Program]js.Value)
@@ -680,9 +729,14 @@ func TexParameteriv(target, pname Enum, params []int32) {
 	}
 }
 
+//go:linkname memmove runtime.memmove
+func memmove(to, from unsafe.Pointer, n uintptr)
+
 // int32 array singleton, allocate 1KB at startup
-var int32ArrayBuffer = make([]int32, 1024)
-var int32ArrayBufferExtendFactor = 2
+var int32ArrayBuffer = make([]int32, 0)
+var int32ArrayBufferExtendFactor = 1
+
+const int32Offset = unsafe.Sizeof(int32(0))
 
 func getInt32ArrayBuffer(size int) []int32 {
 	if size > len(int32ArrayBuffer) {
@@ -710,23 +764,21 @@ func getInt32TypedArrayFromCache(src []int32) *js.TypedArray {
 
 func getInt32TypedArrayFromCacheP(size int, src *int32) *js.TypedArray {
 	b := getInt32ArrayBuffer(size)
-	for i := range b {
-		b[i] = *(*int32)(unsafe.Pointer(uintptr(unsafe.Pointer(src)) + uintptr(i*4)))
-	}
+	memmove(unsafe.Pointer(&b[0]), unsafe.Pointer(src), uintptr(size)*int32Offset)
 	return getInt32TypedArrayFromCache(b)
 }
 
 func getInt32TypedArrayFromCacheUP(size int, src unsafe.Pointer) *js.TypedArray {
 	b := getInt32ArrayBuffer(size)
-	for i := range b {
-		b[i] = *(*int32)(unsafe.Pointer(uintptr(src) + uintptr(i*4)))
-	}
+	memmove(unsafe.Pointer(&b[0]), src, uintptr(size)*int32Offset)
 	return getInt32TypedArrayFromCache(b)
 }
 
 // float32 array singleton, allocate 1KB at startup
-var float32ArrayBuffer = make([]float32, 1024)
-var float32ArrayBufferExtendFactor = 2
+var float32ArrayBuffer = make([]float32, 0)
+var float32ArrayBufferExtendFactor = 1
+
+const float32Offset = unsafe.Sizeof(float32(0))
 
 func getFloat32ArrayBuffer(size int) []float32 {
 	if size > len(float32ArrayBuffer) {
@@ -754,17 +806,13 @@ func getFloat32TypedArrayFromCache(src []float32) *js.TypedArray {
 
 func getFloat32TypedArrayFromCacheP(size int, src *float32) *js.TypedArray {
 	b := getFloat32ArrayBuffer(size)
-	for i := range b {
-		b[i] = *(*float32)(unsafe.Pointer(uintptr(unsafe.Pointer(src)) + uintptr(i*4)))
-	}
+	memmove(unsafe.Pointer(&b[0]), unsafe.Pointer(src), uintptr(size)*float32Offset)
 	return getFloat32TypedArrayFromCache(b)
 }
 
 func getFloat32TypedArrayFromCacheUP(size int, src unsafe.Pointer) *js.TypedArray {
 	b := getFloat32ArrayBuffer(size)
-	for i := range b {
-		b[i] = *(*float32)(unsafe.Pointer(uintptr(src) + uintptr(i*4)))
-	}
+	memmove(unsafe.Pointer(&b[0]), src, uintptr(size)*float32Offset)
 	return getFloat32TypedArrayFromCache(b)
 }
 

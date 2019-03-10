@@ -30,8 +30,8 @@ func init() {
 }
 
 // Byte buffer array singleton, allocate 1mB at startup
-var byteArrayBuffer = make([]byte, (1024 * 1024))
-var byteArrayBufferExtendFactor = 2
+var byteArrayBuffer = make([]byte, 0)
+var byteArrayBufferExtendFactor = 1
 
 func getByteArrayBuffer(size int) []byte {
 	if size > len(byteArrayBuffer) {
