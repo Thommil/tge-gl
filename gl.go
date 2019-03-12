@@ -29,6 +29,10 @@ func init() {
 	}
 }
 
+func (p *plugin) GetName() string {
+	return Name
+}
+
 // Byte buffer array singleton, allocate 1mB at startup
 var byteArrayBuffer = make([]byte, 0)
 var byteArrayBufferExtendFactor = 1

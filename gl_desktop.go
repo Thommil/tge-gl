@@ -28,10 +28,6 @@ func (p *plugin) Init(runtime tge.Runtime) error {
 	return fmt.Errorf("Already initialized")
 }
 
-func (p *plugin) GetName() string {
-	return Name
-}
-
 func (p *plugin) Dispose() {
 	p.isInit = false
 	FlushCache()
@@ -1379,11 +1375,6 @@ func VertexAttrib1fv(dst Attrib, src []float32) {
 	gl.VertexAttrib1fv(uint32(dst), &src[0])
 }
 
-// VertexAttrib1fvUP Unsafe Pointer version of VertexAttrib1fv (faster)
-func VertexAttrib1fvUP(dst Attrib, src *float32) {
-	gl.VertexAttrib1fv(uint32(dst), src)
-}
-
 // VertexAttrib2f writes a vec2 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
@@ -1396,11 +1387,6 @@ func VertexAttrib2f(dst Attrib, x, y float32) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib2fv(dst Attrib, src []float32) {
 	gl.VertexAttrib2fv(uint32(dst), &src[0])
-}
-
-// VertexAttrib2fvUP Unsafe Pointer version of VertexAttrib2fv (faster)
-func VertexAttrib2fvUP(dst Attrib, src *float32) {
-	gl.VertexAttrib2fv(uint32(dst), src)
 }
 
 // VertexAttrib3f writes a vec3 vertex attribute.
@@ -1417,11 +1403,6 @@ func VertexAttrib3fv(dst Attrib, src []float32) {
 	gl.VertexAttrib3fv(uint32(dst), &src[0])
 }
 
-// VertexAttrib3fvUP Unsafe Pointer version of VertexAttrib3fv (faster)
-func VertexAttrib3fvUP(dst Attrib, src *float32) {
-	gl.VertexAttrib3fv(uint32(dst), src)
-}
-
 // VertexAttrib4f writes a vec4 vertex attribute.
 //
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
@@ -1434,11 +1415,6 @@ func VertexAttrib4f(dst Attrib, x, y, z, w float32) {
 // http://www.khronos.org/opengles/sdk/docs/man3/html/glVertexAttrib.xhtml
 func VertexAttrib4fv(dst Attrib, src []float32) {
 	gl.VertexAttrib4fv(uint32(dst), &src[0])
-}
-
-// VertexAttrib4fvUP Unsafe Pointer version of VertexAttrib4fv (faster)
-func VertexAttrib4fvUP(dst Attrib, src *float32) {
-	gl.VertexAttrib4fv(uint32(dst), src)
 }
 
 // VertexAttribPointer uses a bound buffer to define vertex attribute data.

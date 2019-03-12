@@ -27,10 +27,6 @@ func (p *plugin) Init(runtime tge.Runtime) error {
 	return nil
 }
 
-func (p *plugin) GetName() string {
-	return Name
-}
-
 func (p *plugin) Dispose() {
 	p.glContext = nil
 	FlushCache()
