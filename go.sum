@@ -1,9 +1,8 @@
 github.com/go-gl/gl v0.0.0-20181026044259-55b76b7df9d2 h1:78Hza2KHn2PX1jdydQnffaU2A/xM0g3Nx1xmMdep9Gk=
 github.com/go-gl/gl v0.0.0-20181026044259-55b76b7df9d2/go.mod h1:482civXOzJJCPzJ4ZOX/pwvXBWSnzD4OKMdH4ClKGbk=
-github.com/thommil/tge v0.0.0-20190304222746-01232fe6a464 h1:IeJts2QyZqqNXB58SrhcoVodjXQ5Rpm76GHqtbHyXN0=
-github.com/thommil/tge v0.0.0-20190304222746-01232fe6a464/go.mod h1:0cgE2fgoKXa5LodhMJ8SysZEp/CJ900EXZjciSLvuK4=
-github.com/thommil/tge v0.0.0-20190308233602-b1f65a66f95d h1:jOjro1EEQn94GBXuzmzRosoHJ4cK5olXLw6MPi5feQk=
 github.com/thommil/tge v0.0.0-20190308233602-b1f65a66f95d/go.mod h1:0cgE2fgoKXa5LodhMJ8SysZEp/CJ900EXZjciSLvuK4=
+github.com/thommil/tge v0.0.0-20190311230816-98b952a59b69 h1:bnNZF5zpiZKrschqHzLXg1GUj05QSU0jufzfE1qbkjA=
+github.com/thommil/tge v0.0.0-20190311230816-98b952a59b69/go.mod h1:0cgE2fgoKXa5LodhMJ8SysZEp/CJ900EXZjciSLvuK4=
 github.com/thommil/tge-mobile v0.0.0-20190304155026-a0779a310b28/go.mod h1:esUenx0eq059yhIVOB9vadnWk0+vDzKSIqrDR9o/T58=
 github.com/thommil/tge-mobile v0.0.0-20190308225214-66a08abd51aa/go.mod h1:esUenx0eq059yhIVOB9vadnWk0+vDzKSIqrDR9o/T58=
 github.com/veandco/go-sdl2 v0.3.0 h1:IWYkHMp8V3v37NsKjszln8FFnX2+ab0538J371t+rss=
