@@ -19,6 +19,13 @@ Based on :
 ## Dependencies
  * [TGE core](https://github.com/thommil/tge)
 
+### Mobile
+In order to use this package on Linux desktop distros, you may need OpenGL library as an external dependency:
+
+```
+sudo apt-get install libgl1-mesa-dev
+```
+
 ## Limitations
 ### Not implemented
  * glUniformMatrix2x3fv
